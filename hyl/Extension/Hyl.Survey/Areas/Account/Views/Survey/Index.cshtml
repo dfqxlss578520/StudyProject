@@ -1,0 +1,145 @@
+﻿@using Hyl.Core.Domain.Survey.ViewModel
+@using Hyl.Core.Helpers.Utility
+@using Webdiyer.WebControls.Mvc
+@using Hyl.Core.Infrastructure
+@using Hyl.Core.Configuration
+@model PagedList<Hyl.Core.Domain.Survey.SurveyDirectory>
+@{
+    ViewBag.Title = "我的问卷";
+    var searchModel = ViewBag.seachModel as SurveyDirectoryViewModel ?? new SurveyDirectoryViewModel();
+    var webconfig = EngineContext.ContainerManager.Resolve<HylWebConfig>() ?? new HylWebConfig();
+}
+@section css
+{
+    <link href="/Content/js/plugs/jquery-ui-1.10.3.custom/css/mycss/jquery-ui-1.10.3.custom.css" rel="stylesheet" />
+    <link href="/Content/js/plugs/bootstrap-3.3.0-dist/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="/Content/js/plugs/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/css/surveyindex.css" rel="stylesheet" />
+}
+<div style="clear: both;"></div>
+<div id="dwBody" style="margin-top: 15px;">
+    <div id="dwBodyContent" class="bodyCenter" style="">
+        <div id="dwBodyUser">
+            <div class="surveyCollectMiddle">
+                <div class="surveyCollectMiddleContent">
+                    <div style="padding: 25px 45px;overflow: auto;padding-top: 20px;">
+                        <div style="padding: 5px;color: #666565;letter-spacing: 2px;">
+                            所有问卷&nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a href="@Url.Action("Create","Survey")" id="surveyAdd-a" style="outline: none;text-decoration: none;">
+                                <i class="fa fa-plus " aria-hidden="true"></i>&nbsp;新建问卷
+                            </a>
+                        </div>
+
+                        <form action="@Url.Action("Index","Survey")" method="post">
+                            <div class="contacts_search" style="padding: 5px;color:#666565;">
+                                <div style="padding-left: 20px;padding-top: 8px;padding-bottom: 8px;">
+                                    <span style="font-size: 14px;vertical-align: middle;">状态&nbsp;</span>
+                                    <select name="QuerySurveyState" id="QuerySurveyState" style="vertical-align: middle;">
+                                        <option value="-1">不限</option>
+                                        <option value="0">设计</option>
+                                        <option value="1">发布</option>
+                                        <option value="2">结束</option>
+                                    </select>
+                                    &nbsp;&nbsp;
+                                    <span style="font-size: 14px;vertical-align: middle;">名称&nbsp;</span>
+                                    <input type="text" class="inputS1" name="QuerySurveyName" value="@searchModel.QuerySurveyName">
+                                    <input type="submit" value="查询" class="sbtn25 sbtn25_1" style="font-size: 16px;" />
+                                </div>
+
+                            </div>
+                        </form>
+
+                        <div style="margin-top: 15px;">
+                            <div style="padding: 5px;color:#666565; ">
+                                <table class="contacts-table" width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <th style="text-align: center;" width="30"></th>
+                                        <th align="left">问卷</th>
+                                        <th align="left" width="100">创建者</th>
+                                        <th align="left" width="60">答卷数</th>
+                                        <th align="left" width="80">状态</th>
+                                        <th align="left" width="200">创建时间</th>
+                                        <th align="center" width="220" style="padding-left: 10px;">操作</th>
+                                    </tr>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td align="center">
+                                                <input type="hidden" name='surveyId' value="@item.Id">
+                                            </td>
+                                            <td align="left">
+                                                <a target="_blank" href="@Url.Action("Index","SurveyDesign",new{surveyId=item.Id})" class="titleTag">
+                                                    @Utils.NoHTML(Utils.UrlDecode(item.SurveyName))
+                                                </a>
+                                            </td>
+                                            <td align="left" width="100">@item.Uid</td>
+                                            <td align="left">@item.AnswerNum &nbsp;</td>
+                                            <td align="left">
+                                                @(item.SurveyState == 0 ? "设计" : (item.SurveyState == 1 ? "收集" : (item.SurveyState == 2 ? "收集完成" : "")))
+                                            </td>
+                                            <td align="left">
+                                                @item.CreateDate.ToString("yyyy-MM-dd HH:mm:ss")
+                                            </td>
+                                            <td align="left">
+                                                <div class="btn-group surveyLeftBtnGroup">
+                                                    <a class="btn btn-default" href="@Url.Action("Index","SurveyDesign",new { surveyId = item.Id})" title="设计" data-toggle="tooltip" data-placement="top">
+                                                        <i class="fa fa-pencil-square-o"></i>
+                                                    </a>
+                                                    <a class="btn btn-default" href="@Url.Action("Share","Survey",new { surveyid=item.Id  })" title="分享收集" data-toggle="tooltip" data-placement="top">
+                                                        <i class="fa fa-share-square-o"></i>
+                                                    </a>
+                                                    @if (webconfig.IntegrateGuanKong)
+                                                    {
+                                                        <a class="btn btn-default" href="@Url.Action("Index","SurveyAuthority",new { surveyId = item.Id})" title="权限管理" data-toggle="tooltip" data-placement="top">
+                                                            <i class="fa fa-users"></i>
+                                                        </a>
+                                                    }
+                                                    <a class="btn btn-default" href="@Url.Action("Index","Report",new { surveyid=item.Id  })" title="分析报告" data-toggle="tooltip" data-placement="top">
+                                                        <i class="fa fa-line-chart"></i>
+                                                    </a>
+                                                    <a class="btn btn-default copySurvey" href="@Url.Action("CopySurvey","Survey",new { surveyid=item.Id  })" title="复制一份" data-toggle="tooltip" data-placement="top">
+                                                        <i class="fa fa-files-o"></i>
+                                                    </a>
+                                                    <a class="btn btn-default deleteSurvey" href="@Url.Action("Delete","Survey",new { surveyId = item.Id})" title="删除问卷" data-toggle="tooltip" data-placement="top">
+                                                        <i class="fa fa-trash-o fa-fw"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                                <div style="padding-top: 15px;text-align: center;">
+                                    @Html.Pager(Model, new PagerOptions
+                               {
+                                   PageIndexParameterName = "pageindex",
+                                   NumericPagerItemCount = 5,
+                                   ContainerTagName = "ul",
+                                   CssClass = "pagination",
+                                   CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>",
+                                   DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>",
+                                   PagerItemTemplate = "<li>{0}</li>",
+                                   Id = "bootstrappager2",
+                                   PageIndexBoxId = "pageIndexBox",
+                                   GoToButtonId = "goToBtn"
+                               })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var copyurl = '@Url.Action("CopySurvey", "Survey")';
+    $("select[name='QuerySurveyState']").val(@searchModel.QuerySurveyState);
+</script>
+<script src="~/Content/js/surveyindex.js"></script>
+@section script
+{
+    <script src="/Content/js/plugs/bootstrap-3.3.0-dist/dist/js/bootstrap.js"></script>
+    @{Html.RegisterMvcPagerScriptResource();}
+}

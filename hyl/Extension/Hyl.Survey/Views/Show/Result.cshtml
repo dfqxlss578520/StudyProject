@@ -1,0 +1,43 @@
+﻿@model Hyl.Core.Domain.Survey.ViewModel.ResultViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>@Model.SurveyName</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="background: rgb(245, 245, 245);">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" style="background: white;border: 1px solid rgb(219, 218, 218);margin-top:50px;padding-top:25px;padding-bottom:25px;text-align:center;">
+                <p style="font-size: 20px;">问卷：@Model.SurveyName</p><br />
+                @if (Convert.ToInt32(Model.AnswerId) > 0)
+                {
+                    <p class="msg1" style="font-size: 20px;color:green">
+                        问卷提交成功，感谢您的支持！
+                    </p><br /><br />
+                    <p>
+                        <a href="@Url.Action("ViewAnswer", "Report", new { area = "Account", answerId = Model.AnswerId })" style="color:rgb(53, 117, 136); ">查看结果</a>
+                    </p>
+                }
+                else
+                {
+                    <p class="msg1" style="font-size: 20px; color:red;">
+                        @Model.ErrorTip
+                    </p><br /><br />
+                    if (Hyl.Survey.Infrastructure.WebWorkContext.AdminUser != null)
+                    {
+                        <p>
+                            <a href="@Url.Action("Index", "Survey")" style="color:rgb(53, 117, 136); ">我的问卷</a>
+                        </p>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>

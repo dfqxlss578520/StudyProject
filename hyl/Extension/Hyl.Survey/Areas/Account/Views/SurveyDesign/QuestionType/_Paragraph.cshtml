@@ -1,0 +1,64 @@
+﻿@using Hyl.Core.Domain.Survey;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" name="quType" value="PARAGRAPH">
+        <input type="hidden" name="quId" value="@question.Id">
+        <input type="hidden" name="orderById" value="@question.OrderById" />
+        <input type="hidden" name="saveTag" value="1">
+        <input type="hidden" name="hoverTag" value="0">
+        <input type="hidden" name="isRequired" value="@question.IsRequired">
+        <input type="hidden" name="hv" value="@question.Hv">
+        <input type="hidden" name="randOrder" value="@question.RandOrder">
+        <input type="hidden" name="cellCount" value="@question.CellCount">
+        <div class="quLogicInputCase">
+            <input type="hidden" name="quLogicItemNum" value="@question.QuestionLogics.Count">
+            @foreach (var logic in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(logic))">
+                    <input type="hidden" name="quLogicId" value="@logic.Id" />
+                    <input type="hidden" name="cgQuItemId" value="@logic.QuItemId" />
+                    <input type="hidden" name="skQuId" value="@logic.SkipToQuId" />
+                    <input type="hidden" name="visibility" value="1">
+                    <input type="hidden" name="logicSaveTag" value="1">
+
+                    <input type="hidden" name="geLe" value="@logic.GeLe">
+                    <input type="hidden" name="scoreNum" value="@logic.ScoreNum">
+                    <input type="hidden" name="logicType" value="@logic.LogicType">
+                </div>
+            }
+        </div>
+    </div>
+    <div class="surveyQuItem">
+        <div class="surveyQuItemLeftTools">
+            <ul class="surveyQuItemLeftToolsUl">
+                <!-- <li title="移动排序" class="dwQuMove"><div class="dwQuIcon"></div></li>
+                <li title="设置" class="dwQuSet"><div class="dwQuIcon"></div></li>
+                <li title="逻辑" class="dwQuLogic"><div class="dwQuIcon"><div class="quLogicInfo">@(question.QuestionLogics.Count > 0 ? question.QuestionLogics.Count.ToString() : string.Empty)</div></div></li> -->
+                <li title="删除" class="dwQuDelete"><div class="dwQuIcon"></div></li>
+            </ul>
+        </div>
+
+        <div class="surveyQuItemRightTools" style="margin-top: 5px;">
+            <ul class="surveyQuItemRightToolsUl">
+                <li class="questionUp"><div class="dwQuIcon"></div></li>
+                <li class="questionDown"><div class="dwQuIcon"></div></li>
+            </ul>
+        </div>
+        <div class="surveyQuItemContent" style="min-height: 45px;">
+            <div class="quCoTitle">
+                <div class="quCoNum" style="display: none;">@(Model.Questions.IndexOf(question) + 1)、</div>
+                <div class="editAble quCoTitleEdit">@Html.Raw(question.QuName)</div>
+                <input type="hidden" name="quTitleSaveTag" value="1">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

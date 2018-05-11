@@ -1,0 +1,66 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Helpers.Utility;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" class="quType" value="CHENSCORE">
+        <input type="hidden" class="quId" value="@question.Id">
+        <input type="hidden" class="orderById" value="@question.OrderById" />
+        <input type="hidden" class="isRequired" value="@question.IsRequired">
+        <div class="quLogicInputCase">
+            @foreach (var quLogicEn in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(quLogicEn))">
+
+                    <input type="hidden" class="cgQuItemId" value="@quLogicEn.QuItemId" />
+                    <input type="hidden" class="skQuId" value="@quLogicEn.SkipToQuId" />
+                    <input type="hidden" class="logicId" value="@quLogicEn.Id" />
+                    <input type="hidden" class="logicType" value="@quLogicEn.LogicType">
+                </div>
+            }
+        </div>
+        <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="item_qu_@(question.QuType)_@(question.Id)_" />
+    </div>
+    <div class="surveyQuItem">
+
+        <div class="surveyQuItemContent">
+            <div class="quCoTitle">
+                <legend>
+                    <span class="quTitleNum">@(Model.Questions.IndexOf(question))、</span>
+                    <span class="quTitleText">@Html.Raw(Utils.HtmlDecode(question.QuName))</span>
+                </legend>
+            </div>
+
+            <div class="quCoItem">
+                @foreach (var item in question.QuChenRows)
+                {
+                    <input type="hidden" name="item_qu_@(question.QuType)_@(question.Id)_@(item.Id)" value="cs_item_qu_@(question.QuType)_@(question.Id)_@(item.Id)_" />
+                    foreach (var colitem in question.QuChenColumns)
+                    {
+                        <div class="scoreRow">
+                            <fieldset class="starRating" data-role="controlgroup">
+                                <legend>@(Html.Raw(Utils.HtmlDecode(item.OptionName))) &nbsp;&nbsp; @(Html.Raw(Utils.HtmlDecode(colitem.OptionName)))</legend>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                                <i class="fa fa-star-o"></i>
+                            </fieldset>
+                            <input name="cs_item_qu_@(question.QuType)_@(question.Id)_@(item.Id)_@colitem.Id" value="0" type="hidden" class="scoreNumInput">
+                            <input type="hidden" class="quchenrowid" value="@item.Id">
+                            <input type="hidden" class="quchencolid" value="@colitem.Id">
+                        </div>
+                        <input type="hidden" class="dwChenInputTemp" disabled="disabled" value="@(item.Id):@(colitem.Id)">
+                        <input type="hidden" class="answerTag" value="0">
+                    }
+                }
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+    </div>
+</div>

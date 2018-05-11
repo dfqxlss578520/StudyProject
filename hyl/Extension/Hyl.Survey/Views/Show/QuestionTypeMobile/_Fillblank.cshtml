@@ -1,0 +1,46 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Helpers.Utility;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" class="quType" value="FILLBLANK">
+        <input type="hidden" class="quId" value="@question.Id">
+        <input type="hidden" class="orderById" value="@question.OrderById" />
+        <input type="hidden" class="isRequired" value="@question.IsRequired">
+        <input type="hidden" class="answerTag" value="0">
+        <div class="quLogicInputCase">
+            @foreach (var quLogicEn in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(quLogicEn))">
+
+                    <input type="hidden" class="cgQuItemId" value="@quLogicEn.QuItemId" />
+                    <input type="hidden" class="skQuId" value="@quLogicEn.SkipToQuId" />
+                    <input type="hidden" class="logicId" value="@quLogicEn.Id" />
+                    <input type="hidden" class="logicType" value="@quLogicEn.LogicType">
+                </div>
+            }
+        </div>
+    </div>
+    <div class="surveyQuItem">
+        <div class="surveyQuItemContent">
+            <div style="margin: 0px 5px;">
+                <label for="qu_@(question.QuType)_@question.Id">
+                    <span class="quTitleNum">@(Model.Questions.IndexOf(question))、</span>
+                    <span class="quTitleText">@Html.Raw(Utils.HtmlDecode(question.QuName))</span>
+                </label>
+                @if (question.AnswerInputRow > 1)
+                {
+                    <textarea name="qu_@(question.QuType)_@question.Id" rows="@question.AnswerInputRow" class="inputSytle_2 fillblankInput"></textarea>
+                }
+                else
+                {
+                    <input type="text" name="qu_@(question.QuType)_@question.Id" class="inputSytle_1 fillblankInput">
+                }
+            </div>
+        </div>
+    </div>
+</div>

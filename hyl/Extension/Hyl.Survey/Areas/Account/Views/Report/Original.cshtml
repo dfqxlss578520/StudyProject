@@ -1,0 +1,132 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Domain.Survey.ViewModel;
+@using Hyl.Core.Helpers.Utility;
+@using Webdiyer.WebControls.Mvc;
+@model SurveyDirectory
+@{
+    ViewBag.Title = "Original";
+    var page = Model.PageSurveyAnswer;
+}
+<input type="hidden" id="id" name="id" value="${survey.id }">
+
+@Html.Partial("_CollectionAndAnalysis", new CollectionAndAnalysisViewModel() { SurveyId = Model.Id, CollectionAndAnalysis = CollectionAndAnalysis.Analysis })
+<div style="clear: both;"></div>
+<div id="dwBody">
+    <div id="dwBodyContent" class="bodyCenter" style="border:1px solid #C1DAEC;">
+        <div id="dwBodyUser">
+            <div class="surveyCollectMiddle">
+
+                <div class="surveyCollectTop">
+                    <div class="surveyCollectTitleDiv">
+                        <span class="surveyCollectTitle">@Utils.NoHTML(Utils.UrlDecode(Model.SurveyName))</span>
+                        <div class="scmTabRight">
+                            @if (Model.SurveyState == 0)
+                            {
+                                <a href="" class="surveyStateBtn sbtn25 sbtn25_2" style="color: #599fd1;">开始收集</a>
+                            }
+                            else if (Model.SurveyState == 1)
+                            {
+                                <a href="" class="surveyStateBtn sbtn25 sbtn25_2">停止收集</a>
+                            }
+                            else if (Model.SurveyState == 2)
+                            {
+                                <a href="" class="surveyStateBtn sbtn25 sbtn25_2">重新打开收集</a>
+                            }
+                        </div>
+                    </div>
+                    <div class="surveyCollectInfoDiv">
+                        <span class="surveyCollectInfoLeft">
+                            状态：<span class="collectInfoSpan surveyStateText">@(Model.SurveyState == 0 ? "设计中" : (Model.SurveyState == 1 ? "收集中" : (Model.SurveyState == 2 ? "收集完成" : "")))</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            参加人数：<span class="collectInfoSpan">@Model.PageSurveyAnswer.TotalItems</span>
+                        </span>
+                        <span class="surveyCollectInfoRight">
+                            创建时间：<span class="collectInfoSpan">@Model.CreateDate.ToString("yyyy年MM月dd日 HH:mm分")</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="surveyCollectMiddleContent">
+
+                    <div class="collect_1_content">
+
+                        <div style="padding:0px 60px;">
+                            <div style="">
+                                @*<div style="overflow: auto;">
+                                    <div style="float: right;">
+                                        <div class="btn-group">
+                                            <a href="${ctx }/da/my-survey-answer!exportXLS.action?surveyId=${survey.id }" class="dw_btn025 btn btn-default"><i class="fa fa-download"></i>&nbsp;导出数据</a>
+                                        </div>
+                                    </div>
+                                </div>*@
+                                <div style="padding: 5px;"><a href="@Url.Action("Index","Show",new { id= Model.Id,area=""})" target="_blank" class="">查看问卷</a></div>
+                                <div style="padding-top: 5px;">
+                                    <table class="emailInboxList contacts-table" width="100%" border="0" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <th align="left" style="padding-left: 20px;">回答ip</th>
+                                            <th style="text-align: center;">地区</th>
+                                            <th style="text-align:center;">回答时间</th>
+                                            <th style="text-align: center;">回答的题数</th>
+                                            <th style="text-align: center;">操作</th>
+                                        </tr>
+                                        @foreach (var item in Model.PageSurveyAnswer.Items)
+                                        {
+                                            <tr>
+                                                <td align="left" style="padding-left: 20px;text-align: left;" width="150">@item.IpAddr</td>
+                                                <td>@item.City</td>
+                                                <td>@item.EndAnswerDate.ToString("yyyy/MM/dd HH:mm:ss")</td>
+                                                <td>
+                                                    <span style="color: #5D71A7;">@item.CompleteItemNum </span>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group surveyLeftBtnGroup">
+                                                        <a class="btn btn-default" href="@Url.Action("ViewAnswer","Report", new{ answerId = item.Id})" title="查看" data-toggle="tooltip" data-placement="top" target="_blank"><i class="fa fa-eye"></i></a>
+                                                        <a class="btn btn-default deleteSurveyAnswer" href="@Url.Action("DeleteAnswer","Report", new{ answerId = item.Id,surveyId= Model.Id})" title="删除" data-toggle="tooltip" data-placement="top"><i class="fa fa-trash-o fa-fw"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    </table>
+                                </div>
+                                @Html.Pager(new PagedList<SurveyAnswer>(page.Items, page.PageIndex, page.PageSize, page.TotalItems), new PagerOptions { PageIndexParameterName = "id", ContainerTagName = "ul", CssClass = "pagination", CurrentPagerItemTemplate = "<li class=\"active\"><a href=\"#\">{0}</a></li>", DisabledPagerItemTemplate = "<li class=\"disabled\"><a>{0}</a></li>", PagerItemTemplate = "<li>{0}</li>" })
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(".scmcSurveySNSShare textarea").focus(function () {
+        $(this).css({ "background-color": "#FDF9CD", "border-color": "#98C5C3" });
+    });
+    $(".scmcSurveySNSShare textarea").blur(function () {
+        $(this).css("background-color", "#F9F7D7");
+    });
+
+    $(".deleteSurveyAnswer").click(function () {
+        var thTr = $(this).parents("tr");
+        if (confirm("确定删除答卷数据？")) {
+            var url = $(this).attr("href");
+            var data = "";
+            $.ajax({
+                url: url,
+                data: data,
+                type: "post",
+                success: function (msg) {
+                    if (msg === "true") {
+                        thTr.remove();
+                    } else {
+                        alert("抱歉，删除失败！");
+                    }
+                }
+            });
+        }
+        return false;
+    });
+
+</script>

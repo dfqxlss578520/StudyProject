@@ -1,0 +1,99 @@
+﻿@{
+    ViewBag.Title = "单点登录中心";
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>泓源林单点登录中心 - 时间轴</title>
+    <meta name="keywords" content="泓源林单点登录中心">
+    <meta name="description" content="泓源林单点登录中心，集合公司各大系统于一体">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/Content/theme/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="/Content/theme/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
+    <link href="/Content/theme/css/animate.min.css" rel="stylesheet">
+    <link href="/Content/theme/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="wrapper wrapper-content">
+                <div class="row animated fadeInRight">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="" id="ibox-content">
+                                <div class="text-center float-e-margins p-md">
+                                    <h2>单点登录系统中心开发</h2>
+                                    
+                                </div>
+                                <div id="vertical-timeline" class="vertical-container light-timeline center-orientation">
+                                    <div class="vertical-timeline-block">
+                                        <div class="vertical-timeline-icon navy-bg">
+                                            <i class="fa fa-briefcase"></i>
+                                        </div>
+
+                                        <div class="vertical-timeline-content">
+                                            <h2>兼容多公司</h2>
+                                            <p>
+                                                支持多个公司账户同时使用，相同账号在不同公司也能使用
+                                            </p>
+                                            <span class="vertical-date">
+                                                今天 <br>
+                                                <small>2017年09月26日</small>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="vertical-timeline-block">
+                                        <div class="vertical-timeline-icon blue-bg">
+                                            <i class="fa fa-file-text"></i>
+                                        </div>
+
+                                        <div class="vertical-timeline-content">
+                                            <h2>无重复账号系统完成</h2>
+                                            <span class="vertical-date">
+                                                <small>2017年07月13日</small>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="vertical-timeline-block">
+                                        <div class="vertical-timeline-icon lazur-bg">
+                                            <i class="fa fa-coffee"></i>
+                                        </div>
+
+                                        <div class="vertical-timeline-content">
+                                            <h2>项目初立</h2>
+                                            <span class="vertical-date"><small>2017年06月21日</small></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="/Content/theme/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/Content/theme/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/Content/theme/js/content.min.js?v=1.0.0"></script>
+    <script>
+        $(document).ready(function () {
+            $("#leftVersion").click(function (event) {
+                event.preventDefault();
+                $("#vertical-timeline").toggleClass("center-orientation")
+            })
+        });
+    </script>
+</body>
+</html>

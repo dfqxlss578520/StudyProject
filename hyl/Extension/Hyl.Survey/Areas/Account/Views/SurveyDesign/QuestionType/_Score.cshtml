@@ -1,0 +1,106 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Helpers.Utility;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" name="quType" value="SCORE">
+        <input type="hidden" name="quId" value="@question.Id">
+        <input type="hidden" name="orderById" value="@question.OrderById" />
+        <input type="hidden" name="saveTag" value="1">
+        <input type="hidden" name="hoverTag" value="0">
+        <input type="hidden" name="isRequired" value="@question.IsRequired">
+        <input type="hidden" name="hv" value="@question.Hv">
+        <input type="hidden" name="randOrder" value="@question.RandOrder">
+        <input type="hidden" name="cellCount" value="@question.CellCount">
+
+        <input type="hidden" name="paramInt01" value="@question.ParamInt01">
+        <input type="hidden" name="paramInt02" value="@question.ParamInt02">
+        <div class="quLogicInputCase">
+            <input type="hidden" name="quLogicItemNum" value="@question.QuestionLogics.Count">
+            @foreach (var logic in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(logic))">
+                    <input type="hidden" name="quLogicId" value="@logic.Id" />
+                    <input type="hidden" name="cgQuItemId" value="@logic.QuItemId" />
+                    <input type="hidden" name="skQuId" value="@logic.SkipToQuId" />
+                    <input type="hidden" name="visibility" value="1">
+                    <input type="hidden" name="logicSaveTag" value="1">
+
+                    <input type="hidden" name="geLe" value="@logic.GeLe">
+                    <input type="hidden" name="scoreNum" value="@logic.ScoreNum">
+                    <input type="hidden" name="logicType" value="@logic.LogicType">
+                </div>
+            }
+        </div>
+    </div>
+    <div class="surveyQuItem">
+        <div class="surveyQuItemLeftTools">
+            <ul class="surveyQuItemLeftToolsUl">
+                <li title="移动排序" class="dwQuMove"><div class="dwQuIcon"></div></li>
+                <li title="设置" class="dwQuSet"><div class="dwQuIcon"></div></li>
+                <li title="逻辑" class="dwQuLogic">
+                    <div class="dwQuIcon">
+                        <div class="quLogicInfo">
+                            @(question.QuestionLogics.Count > 0 ? question.QuestionLogics.Count.ToString() : string.Empty)
+                        </div>
+                    </div>
+                </li>
+                <li title="删除" class="dwQuDelete"><div class="dwQuIcon"></div></li>
+            </ul>
+        </div>
+
+        <div class="surveyQuItemRightTools">
+            <ul class="surveyQuItemRightToolsUl">
+                <li class="questionUp"><div class=dwQuIcon></div></li>
+                <li class="questionDown"><div class=dwQuIcon></div></li>
+            </ul>
+        </div>
+        <div class="surveyQuItemContent">
+            <div class="quCoTitle">
+                <div class="quCoNum">@(Model.Questions.IndexOf(question) + 1)、</div>
+                <div class="editAble quCoTitleEdit">@Html.Raw(Utils.HtmlDecode(question.QuName))</div>
+                <input type="hidden" name="quTitleSaveTag" value="1">
+            </div>
+            <div class="quCoItem">
+                <table class="quCoItemTable" cellpadding="0" cellspacing="0">
+                    @foreach (var item in question.QuScores)
+                    {
+                        <tr class="quScoreOptionTr">
+                            <td class="quCoItemTableTd quOptionEditTd">
+                                <label class="editAble quCoOptionEdit">@Html.Raw(Utils.HtmlDecode(item.OptionName))</label>
+                                <div class="quItemInputCase">
+                                    <input type="hidden" name="quItemId" value="@item.Id"><input type="hidden" name="quItemSaveTag" value="1">
+                                </div>
+                            </td>
+                            <td class="quCoItemTableTd">
+                                <table class="scoreNumTable">
+                                    <tr>
+                                        @for (int i = 1; i <= question.ParamInt02; i++)
+                                        {
+                                            <td>@i</td>
+                                        }
+                                    </tr>
+                                </table>
+                            </td>
+                            <td class="quCoItemTableTd">分</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="quCoBottomTools">
+                <ul class="quCoBottomToolsUl">
+                    <li class="addOption" title="添加"><div class="dwQuIcon"></div></li>
+                    <li class="addMoreOption" title="批量添加"><div class="dwQuIcon"></div></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

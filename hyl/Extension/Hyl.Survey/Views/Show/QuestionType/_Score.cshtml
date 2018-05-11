@@ -1,0 +1,64 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Helpers.Utility;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" class="quType" value="SCORE">
+        <input type="hidden" class="quId" value="@question.Id">
+        <input type="hidden" class="orderById" value="@question.OrderById" />
+        <input type="hidden" class="isRequired" value="@question.IsRequired">
+        <div class="quLogicInputCase">
+            @foreach (var quLogicEn in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(quLogicEn))">
+                    <input type="hidden" class="cgQuItemId" value="@quLogicEn.QuItemId" />
+                    <input type="hidden" class="skQuId" value="@quLogicEn.SkipToQuId" />
+                    <input type="hidden" class="logicId" value="@quLogicEn.Id" />
+                    <input type="hidden" class="geLe" value="@quLogicEn.GeLe" />
+                    <input type="hidden" class="scoreNum" value="@quLogicEn.ScoreNum" />
+                    <input type="hidden" class="logicType" value="@quLogicEn.LogicType" />
+                </div>
+            }
+        </div>
+        <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="item_qu_@(question.QuType)_@(question.Id)_" />
+    </div>
+    <div class="surveyQuItem">
+        <div class="surveyQuItemContent">
+            <div class="quCoTitle">
+                <div class="quCoNum">@(Model.Questions.IndexOf(question) + 1)、</div>
+                <div class="editAble quCoTitleEdit">@Html.Raw(Utils.HtmlDecode(question.QuName))</div>
+            </div>
+            <div class="quCoItem">
+                <table class="quCoItemTable" cellpadding="0" cellspacing="0">
+                    @foreach (var item in question.QuScores)
+                    {
+                        <tr class="quScoreOptionTr">
+                            <td class="quCoItemTableTd quOptionEditTd">
+                                <label class="editAble quCoOptionEdit">@Html.Raw(Utils.HtmlDecode(item.OptionName))</label>
+                                <input class="dwScoreOptionId" value="@item.Id" disabled="disabled" type="hidden" />
+                                <input type="hidden" class="answerTag" value="0">
+                            </td>
+                            <td class="quCoItemTableTd">
+                                <table class="scoreNumTable" border="0" cellspacing="0" cellpadding="1">
+                                    <tr>
+                                        @for (int i = 1; i <= question.ParamInt02; i++)
+                                        {
+                                            <td>@i</td>
+                                        }
+                                    </tr>
+                                </table>
+                                <input name="item_qu_@(question.QuType)_@(question.Id)_@item.Id" value="" type="hidden" class="scoreNumInput">
+                            </td>
+                            <td class="quCoItemTableTd scoreNumText">分</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

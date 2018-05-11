@@ -1,0 +1,14 @@
+﻿.collectTab { cursor: pointer; }
+.colpick { margin-left: 0px; margin-top: -10px; }
+#site_show_top_slider { font-size: 62.5%; background: #DADADA; border: none; }
+    #site_show_top_slider a { outline: none; outline-style: none; }
+    #site_show_top_slider .ui-slider-range { background: #599FD2; }
+.colpick { margin-left: 0px; margin-top: -10px; }
+.scmcRightTopRight a:hover { text-decoration: none; color: #ffffff; }
+.scmcsiteRightContent { width: 456px; height: 295px; }
+.colpick_hex .colpick_field_letter { width: 18px; }
+.scmTabRight { margin-top: -5px; margin-left: 10px;}
+a:hover { text-decoration: none !important; }
+.surveyCollectMiddleContent a:hover { color: #ffffff; }
+#shareSurTextarea { width: 100%; height: 160px; border: none; outline: none; resize: none; font-size: 16px; }
+.dialogMessageButton{ padding: 2px;}

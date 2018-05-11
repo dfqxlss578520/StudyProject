@@ -1,0 +1,82 @@
+﻿<div id="tools_wrap">
+    <div id="tools">
+        <div class="tools_tabs">
+            <div class="tools_tabs_left">
+                <ul>
+                    <li class="current" id="tools_tab1_li">基本</li>
+                    <li id="tools_tab2_li">常用</li>
+                </ul>
+            </div>
+            <div class="tools_tabs_right">
+                <ul>
+                    <li style="padding: 0px; font-size: 12px; line-height: 22px;"><a href="/" target="_black" style="text-decoration: none; color: gray;">帮助</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tools_contents">
+            <div id="tools_tab1" class="tools_tab_div" style="display: inline;">
+                <div id="toolsBashQu" class="tools_item">
+                    <div class="toolbars">
+                        @Html.Partial("_dragBasicUiTemplate")
+                    </div>
+                    <div class="tooltext">基本题型</div>
+                </div>
+
+                <div id="toolsChenQu" class="tools_item" style="">
+                    <div class="toolbars">
+                        @Html.Partial("_dragMatrixUiTemplate")
+                    </div>
+                    <div class="tooltext">矩阵题型</div>
+                </div>
+
+                <div id="toolsAuxiliaryQu" class="tools_item">
+                    <div class="toolbars">
+                        @Html.Partial("_dragHelperUiTemplate")
+                    </div>
+                    <div class="tooltext">辅助组件</div>
+                </div>
+                @*<div id="toolsEvent" class="tools_item" style="display: none;">
+                        <div class="toolbars">
+                            <ul>
+                                <li id="surveyAttrSetToolbar" class="surveyAttrSetToolbar_li">
+                                    <a href="@Url.Action("PrePublish","Survey",new { surveyid=Model.Id })">
+                                        <span class="dwToolbar_icon" title="问卷设置"></span>
+                                    </a>
+                                </li>
+                                <li id="surveyStyleEditToolbar">
+                                    <a href="@Url.Action("PrePublish","Survey",new { surveyid=Model.Id })">
+                                        <span class="dwToolbar_icon" title="样式编辑"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tooltext">操作</div>
+                    </div>*@
+            </div>
+            <div id="tools_tab2" class="tools_tab_div">
+
+                <div id="contactPersonQuestion" class="tools_item">
+                    <div class="toolbars">
+                        @Html.Partial("_dragShortcutUiTemplate")
+                    </div>
+                    <div class="tooltext">常用题型</div>
+                </div>
+            </div>
+            <div id="toolsPubBtn">
+                <div class="toolbars" style="padding:10px  15px 10px 0px;">
+                    <ul>
+                        <li id="publishBtn" data-url="@Url.Action("PrePublish","Survey",new{ surveyId = Model.Id })">
+                            <div class="dwToolbar_icon"></div>
+                        </li>
+                        <li id="saveModelBtn" style="display: none;" class="saveModelBtn_li">
+                            <div class="dwToolbar_icon"></div>
+                        </li>
+                        <li id="saveBtn">
+                            <div class="dwToolbar_icon"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

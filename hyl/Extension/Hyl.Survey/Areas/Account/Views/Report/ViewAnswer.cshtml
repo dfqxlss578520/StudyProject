@@ -1,0 +1,333 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Helpers.Utility;
+@model SurveyDirectory
+@section css{<link href="~/Content/css/response.css" rel="stylesheet" />}
+<div id="wrap">
+    <div class="root-body" style="padding-top: 20px;">
+        <div class="middle-body" style="padding-top:10px;height: auto! important;">
+            @if (Model != null)
+            {
+                <input type="hidden" name="surveyId" value="@Model.Id" />
+                <div class="middle-body-title">
+                    <h3>@Model.SurveyName</h3>
+                    <p>@Model.SurveyDetail.SurveyNote</p>
+                    <div style="clear: both;"></div>
+                </div>
+                <div class="middle-body-content">
+                    @if (Model != null && Model.Questions.Count > 0)
+                {
+                    foreach (var question in Model.Questions)
+                    {
+                        var i = Model.Questions.IndexOf(question);
+                        if (question.QuType != QuType.PARAGRAPH || question.QuType != QuType.PAGETAG)
+                        {
+                                <div class="r-qu-body">
+                                    <div class="r-qu-body-title">
+                                        <span class="quCoNum">@(i + 1)</span>@(Html.Raw(Utils.HtmlDecode(question.QuName)))[@EnumExtendsion.GetDescription(question.QuType)]
+                                    </div>
+                                    <div class="r-qu-body-content">
+                                        @if (question.QuType == QuType.RADIO)
+                                        {
+                                            <!--单选题 -->
+                                            <ul class="r-qu-body-ul1 @(question.Hv == 1 ? "r-qu-body-ul2" : "")">
+                                                @foreach (var item in question.QuRadios)
+                                                {
+                                                    <li>
+                                                        <ul class="quItem-ul">
+                                                            @if (question.AnRadios.FirstOrDefault().QuItemId == item.Id)
+                                                            {
+                                                                <li><input type="radio" name="qu_@(question.QuType)_@(question.Id)" value="@item.Id" checked="checked" disabled /></li>
+                                                                <li>@(Html.Raw(Utils.HtmlDecode(@item.OptionName)))</li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li><input type="radio" name="qu_@(question.QuType)_@(question.Id)" value="@item.Id" disabled /></li>
+                                                                <li>@(Html.Raw(Utils.HtmlDecode(@item.OptionName)))</li>
+                                                            }
+                                                        </ul>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                        else if (question.QuType == QuType.CHECKBOX)
+                                        {
+                                        <!--多选题 -->
+                                            <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="qu_@(question.QuType)_@(question.Id)_" />
+                                            <ul class="r-qu-body-ul1 @(question.Hv == 1 ? "r-qu-body-ul2" : "")">
+                                                @if (question.AnCheckboxs.Count > 0)
+                                                {
+                                                    foreach (var item in question.QuCheckboxes)
+                                                    {
+                                                        var isBreak = 0;
+                                                        <li>
+                                                            <ul class="quItem-ul">
+                                                                @if (question.AnCheckboxs.FirstOrDefault(p => p.QuItemId == item.Id) != null)
+                                                                {
+                                                                    isBreak = 1;
+                                                                    <li><input type="checkbox" name="tag_qu_@(question.QuType)_@(question.Id)_@item.Id" value="@item.Id" checked="checked" disabled /></li>
+                                                                    <li>@(Html.Raw(Utils.HtmlDecode(@item.OptionName)))</li>
+                                                                }
+                                                                else
+                                                                {
+                                                                    isBreak = 0;
+                                                                    <li><input type="checkbox" name="tag_qu_@(question.QuType)_@(question.Id)_@item.Id" value="@item.Id" disabled /></li>
+                                                                    <li>@(Html.Raw(Utils.HtmlDecode(@item.OptionName)))</li>
+                                                                }
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    foreach (var item in question.QuCheckboxes)
+                                                    {
+                                                        <li>
+                                                            <ul class="quItem-ul">
+                                                                <li><input type="checkbox" name="tag_qu_@(question.QuType)_@(question.Id)_@item.Id" value="@item.Id" /></li>
+                                                                <li>@(Html.Raw(Utils.HtmlDecode(@item.OptionName)))</li>
+                                                            </ul>
+                                                        </li>
+                                                    }
+                                                }
+                                            </ul>
+                                        }
+                                        else if (question.QuType == QuType.FILLBLANK)
+                                        {
+                                        <!--填空 -->
+                                            <ul class="r-qu-body-ul1 r-qu-body-ul3">
+                                                <li>
+                                                    @(question.AnFillblanks.FirstOrDefault()?.Answers)
+                                                </li>
+                                            </ul>
+                                        }
+                                        else if (question.QuType == QuType.SCORE)
+                                        {
+                                        <!--评分题 -->
+                                            <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="item_qu_@(question.QuType)_@(question.Id)_" />
+                                            <table class="qusTable" width="90%">
+                                                <tr>
+                                                    <th>行/分</th>
+                                                    @for (int v = question.ParamInt01; v <= question.ParamInt02; v++)
+                                                    {
+                                                        <th style="text-align: center;">@v</th>
+                                                    }
+                                                </tr>
+                                                @foreach (var item in question.QuScores)
+                                                {
+                                                    <tr>
+                                                        <td align="center">@(Html.Raw(Utils.HtmlDecode(@item.OptionName)))</td>
+                                                        @for (int v = question.ParamInt01; v <= question.ParamInt02; v++)
+                                                        {
+                                                            <td align="center"><input type="radio" name="item_qu_@(question.QuType)_@(question.Id)_@item.Id" value="@v" disabled /> </td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </table>
+                                            foreach (var answerItem in question.AnScores)
+                                            {
+                                                <script type="text/javascript">
+                                            $("input[name='item_qu_@(question.QuType)_@(answerItem.QuId)_@(answerItem.QuRowId)'][value='@(answerItem.AnswserScore)']").attr("checked", true);
+                                                </script>
+                                            }
+                                        }
+                                        else if (question.QuType == QuType.ORDERQU)
+                                        {
+                                            var orderlist = question.AnOrders.OrderBy(p => p.OrderyNum).ToList();
+                                            <!-- 评分题 -->
+                                            <table class="qusTable" width="90%">
+                                                @for (int v = 1; v <= orderlist.Count; v++)
+                                                {
+                                                    <tr>
+                                                        <td>第@(v)名</td>
+                                                        <td>@(Html.Raw(Utils.HtmlDecode(@question.QuOrderbies.FirstOrDefault(p => p.Id == orderlist[v - 1].QuRowId).OptionName)))</td>
+                                                    </tr>
+                                                }
+                                            </table>
+                                        }
+                                        else if (question.QuType == QuType.MULTIFILLBLANK)
+                                        {
+                                        <!--多行填空 -->
+                                            <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="qu_@(question.QuType)_@(question.Id)_" />
+                                            <ul class="r-qu-body-ul1 r-qu-body-ul3">
+                                                @if (question.AnMultiFillblanks.Count > 0)
+                                                {
+                                                    foreach (var item in question.QuMultiFillblanks)
+                                                    {
+                                                        var isBreak = 0;
+                                                        foreach (var answerItem in question.AnMultiFillblanks)
+                                                        {
+                                                            var iStatus = question.AnMultiFillblanks.IndexOf(answerItem);
+                                                            if (answerItem.QuItemId == item.Id)
+                                                            {
+                                                                isBreak = 1;
+                                                                <li>@(Html.Raw(Utils.HtmlDecode(@item.OptionName))) <input type="text" name="text_qu_@(question.QuType)_@(question.Id)_@item.Id" value="@answerItem.Answers" style="float: right;" disabled /></li>
+                                                            }
+                                                            else if (question.AnMultiFillblanks.Count == (iStatus + 1) && isBreak == 0)
+                                                            {
+                                                                isBreak = 0;
+                                                                <li>@(Html.Raw(Utils.HtmlDecode(@item.OptionName)))  <input type="text" name="text_qu_@(question.QuType)_@(question.Id)_@item.Id" value="" style="float: right;" disabled /></li>
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    foreach (var item in question.QuMultiFillblanks)
+                                                    {
+                                                        <li>@(Html.Raw(Utils.HtmlDecode(@item.OptionName)))  <input type="text" name="text_qu_@(question.QuType)_@(question.Id)_@item.Id" value="" style="float: right;" disabled /></li>
+                                                    }
+                                                }
+                                            </ul>
+                                        }
+                                        else if (question.QuType == QuType.CHENRADIO)
+                                        {
+                                        <!--矩阵单选题 -->
+                                            <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="item_qu_@(question.QuType)_@(question.Id)_" />
+                                            <table class="qusTable" width="90%">
+                                                <tr>
+                                                    <th>行/列</th>
+                                                    @foreach (var colItem in question.QuChenColumns)
+                                                    {
+                                                        <th style="text-align: center;">@(Html.Raw(Utils.HtmlDecode(@colItem.OptionName)))</th>
+                                                    }
+                                                </tr>
+                                                @foreach (var item in question.QuChenRows)
+                                                {
+                                                    <tr>
+                                                        <td>@(Html.Raw(Utils.HtmlDecode(@item.OptionName)))</td>
+                                                        @foreach (var colItem in question.QuChenColumns)
+                                                        {
+                                                            <td style="text-align: center;"><input type="radio" name="item_qu_@(question.QuType)_@(question.Id)_@item.Id" value="@colItem.Id" disabled /> </td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </table>
+                                            foreach (var answerItem in question.AnChenRadio)
+                                            {
+                                                <script type="text/javascript">
+                                            $("input[name='item_qu_@(question.QuType)_@(answerItem.QuId)_@(answerItem.QuRowId)'][value='@(answerItem.QuColId)']").attr("checked", true);
+                                                </script>
+                                            }
+                                        }
+                                        else if (question.QuType == QuType.CHENCHECKBOX)
+                                        {
+                                    <!--矩阵多选题 -->
+                                            <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="item_qu_@(question.QuType)_@(question.Id)_" />
+                                            <table class="qusTable" width="90%">
+                                                <tr>
+                                                    <th width="80">行/列</th>
+                                                    @foreach (var colItem in question.QuChenColumns)
+                                                    {
+                                                        <th style="text-align: center;">@(Html.Raw(Utils.HtmlDecode(@colItem.OptionName)))</th>
+                                                    }
+                                                </tr>
+                                                @foreach (var item in question.QuChenRows)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @(Html.Raw(Utils.HtmlDecode(@item.OptionName)))
+                                                            <input type="hidden" name="item_qu_@(question.QuType)_@(question.Id)_@item.Id" value="ck_item_qu_@(question.QuType)_@(question.Id)_@item.Id" />
+                                                        </td>
+                                                        @foreach (var colItem in question.QuChenColumns)
+                                                        {
+                                                            <td align="center"><input type="checkbox" name="ck_item_qu_@(question.QuType)_@(question.Id)_@(item.Id)_@(colItem.Id)" value="@colItem.Id" disabled /> </td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </table>
+                                            foreach (var answerItem in question.AnChenCheckbox)
+                                            {
+                                                <script type="text/javascript">
+                                            $("input[name='ck_item_qu_@(question.QuType)_@(answerItem.QuId)_@(answerItem.QuRowId)_@(answerItem.QuColId)'][value='@(answerItem.QuColId)']").attr("checked", true);
+                                                </script>
+                                            }
+                                        }
+                                        else if (question.QuType == QuType.CHENSCORE)
+                                        {
+                                        <!--矩阵评分题 -->
+                                            <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="item_qu_@(question.QuType)_@(question.Id)_" />
+                                            <table class="qusTable" width="90%">
+                                                <tr>
+                                                    <th>行/列</th>
+                                                    @foreach (var colItem in question.QuChenColumns)
+                                                    {
+                                                        <th style="text-align: center;">@colItem.OptionName</th>
+                                                    }
+                                                </tr>
+                                                @foreach (var item in question.QuChenRows)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @(Html.Raw(Utils.HtmlDecode(@item.OptionName)))
+                                                            <input type="hidden" name="item_qu_@(question.QuType)_@(question.Id)_@item.Id" value="score_item_qu_@(question.QuType)_@(question.Id)_@item.Id" />
+                                                        </td>
+                                                        @foreach (var colItem in question.QuChenColumns)
+                                                        {
+                                                            <td align="center">
+                                                                <select name="score_item_qu_@(question.QuType)_@(question.Id)_@(item.Id)_@colItem.Id" disabled>
+                                                                    <option></option>
+                                                                </select>
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </table>
+                                            foreach (var answerItem in question.AnChenScore)
+                                            {
+                                                <script type="text/javascript">
+                                                $("select[name='score_item_qu_@(question.QuType)_@(answerItem.QuId)_@(answerItem.QuRowId)_@(answerItem.QuColId)']").html("<option>@answerItem.AnswserScore 分</option>");
+                                                </script>
+                                            }
+                                        }
+                                        else if (question.QuType == QuType.CHENFBK)
+                                        {
+                                    <!--矩阵填空题 -->
+                                            <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="item_qu_@(question.QuType)_@(question.Id)_" />
+                                            <table class="qusTable" width="90%">
+                                                <tr>
+                                                    <th>行/列</th>
+                                                    @foreach (var colItem in question.QuChenColumns)
+                                                    {
+                                                        <th style="text-align: center;">@colItem.OptionName</th>
+                                                    }
+                                                </tr>
+                                                @foreach (var item in question.QuChenRows)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            @(Html.Raw(Utils.HtmlDecode(@item.OptionName)))
+                                                            <input type="hidden" name="item_qu_@(question.QuType)_@(question.Id)_@item.Id" value="fbk_item_qu_@(question.QuType)_@(question.Id)_@item.Id" />
+                                                        </td>
+                                                        @foreach (var colItem in question.QuChenColumns)
+                                                        {
+                                                            <td align="center">
+                                                                <input type="text" name="fbk_item_qu_@(question.QuType)_@(question.Id)_@(item.Id)_@colItem.Id" size="6" disabled />
+                                                            </td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </table>
+                                            foreach (var answerItem in question.AnChenFillblank)
+                                            {
+                                                <script type="text/javascript">
+                                                $("input[name='fbk_item_qu_@(question.QuType)_@(answerItem.QuId)_@(answerItem.QuRowId)_@(answerItem.QuColId)']").val("@answerItem.AnswerValue");
+                                                </script>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+                <div class="button-body-btn"></div>
+            }
+            else
+            {
+                <div class="middle-body-title">
+                    <h3>答案不存在或已被删除</h3>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Helpers.Utility;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" class="quType" value="RADIO">
+        <input type="hidden" class="quId" value="@question.Id">
+        <input type="hidden" class="orderById" value="@question.OrderById" />
+        <input type="hidden" class="isRequired" value="@question.IsRequired">
+        <input type="hidden" class="answerTag" value="0">
+        <div class="quLogicInputCase">
+            @foreach (var quLogicEn in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(quLogicEn))">
+                    <input type="hidden" class="cgQuItemId" value="@quLogicEn.QuItemId" />
+                    <input type="hidden" class="skQuId" value="@quLogicEn.SkipToQuId" />
+                    <input type="hidden" class="logicId" value="@quLogicEn.Id" />
+                    <input type="hidden" class="logicType" value="@quLogicEn.LogicType" />
+                </div>
+            }
+        </div>
+    </div>
+    <div class="surveyQuItem">
+        <div class="surveyQuItemContent">
+            <fieldset data-role="controlgroup">
+                <legend>
+                    <span class="quTitleNum">@(Model.Questions.IndexOf(question))、</span>
+                    <span class="quTitleText">@Html.Raw(Utils.HtmlDecode(question.QuName))</span>
+                </legend>
+                @foreach (var item in question.QuRadios)
+                {
+                    <div class="dwQuOptionItemContent">
+                        <label for="qu_@(question.QuType+"_"+question.Id+"_"+item.Id)">@Html.Raw(Utils.HtmlDecode(item.OptionName))</label>
+                        <input id="qu_@(question.QuType+"_"+question.Id+"_"+item.Id)" type="radio" name="qu_@(question.QuType+"_"+question.Id)" value="@item.Id">
+                    </div>
+                }
+            </fieldset>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,127 @@
+﻿@using Hyl.Core.Domain.Survey
+@using Hyl.Core.Helpers.Utility
+@model SurveyDirectory
+@{
+    ViewBag.Title = Utils.NoHTML(Utils.HtmlDecode(Model.SurveyName));
+}
+<input type="hidden" id="ctx" name="ctx" value="/Content">
+<input type="hidden" id="id" name="id" value="@Model.Id">
+<input type="hidden" id="ctx" value="/content">
+<input type="hidden" id="surveyModel_hidden" value="@Model.SurveyModel">
+@Html.Partial("_HeaderTool")
+<div id="dw_body">
+    <div id="dw_body_content">
+        <div id="dwSurveyTitle">
+            <div id="dwSurveyName" class="editAble dwSvyName">@Html.Raw(Utils.HtmlDecode(Model.SurveyName))</div>
+        </div>
+        <input type="hidden" name="svyNmSaveTag" value="1">
+        <div id="dwSurveyNote">
+            <div id="dwSurveyNoteTools">参考样例</div>
+            <div id="dwSurveyNoteEdit" class="editAble dwSvyNoteEdit">@Html.Raw(Utils.HtmlDecode(Model.SurveyDetail.SurveyNote))</div>
+            <input type="hidden" name="svyNoteSaveTag" value="1">
+        </div>
+
+        <div id="dwSurveyQuContent" style="min-height: 500px;">
+            <ul id="dwSurveyQuContentAppUl">
+                <!-- 题目内容 -->
+                @if (Model.Questions != null)
+                {
+                    foreach (var question in Model.Questions)
+                    {
+                        <li class="li_surveyQuItemBody">
+                            @if (question.QuType == QuType.RADIO)
+                            {
+                                        <!-- 单选题 -->
+                                @Html.Partial("QuestionType/_Radio", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                            else if (question.QuType == QuType.CHECKBOX)
+                            {
+                                        <!-- 多选题 -->
+                                @Html.Partial("QuestionType/_Checkbox", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                            else if (question.QuType == QuType.FILLBLANK)
+                            {
+                                        <!-- 填空题 -->
+                                @Html.Partial("QuestionType/_Fillblank", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                            else if (question.QuType == QuType.SCORE)
+                            {
+                                        <!-- 评分题 -->
+                                @Html.Partial("QuestionType/_Score", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                            else if (question.QuType == QuType.ORDERQU)
+                            {
+                                        <!-- 排序题 -->
+                                @Html.Partial("QuestionType/_Orderqu", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                            else if (question.QuType == QuType.PAGETAG)
+                            {
+                                        <!-- 分页题 -->
+                                @Html.Partial("QuestionType/_Pagetag", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                            else if (question.QuType == QuType.PARAGRAPH)
+                            {
+                                        <!--段落说明 -->
+                                @Html.Partial("QuestionType/_Paragraph", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                            else if (question.QuType == QuType.MULTIFILLBLANK)
+                            {
+                                        <!--多项填空题 -->
+                                @Html.Partial("QuestionType/_Multifillblank", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                            else if (question.QuType == QuType.CHENRADIO)
+                            {
+                                        <!-- 矩阵单选题 -->
+                                @Html.Partial("QuestionType/_ChenRadio", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                            else if (question.QuType == QuType.CHENCHECKBOX)
+                            {
+                                        <!--矩阵多选题 -->
+                                @Html.Partial("QuestionType/_Chencheckbox", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                            else if (question.QuType == QuType.CHENFBK)
+                            {
+                                        <!-- 矩阵填空题 -->
+                                @Html.Partial("QuestionType/_Chenfbk", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                            else if (question.QuType == QuType.CHENSCORE)
+                            {
+                                        <!-- 矩阵评分题 -->
+                                @Html.Partial("QuestionType/_Chenscore", Model, new ViewDataDictionary { { "question", question } })
+                            }
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+        resizeBodyWidth();
+        var savesurvey= '@Url.Action("Update", "Survey")';
+        var savedesign = '@Url.Action("Save", "SurveyDesign")';
+        var questiondelete = '@Url.Action("DeleteQuestion", "SurveyDesign")';
+        var questionradiodelete = '@Url.Action("DeleteRadio", "SurveyDesign")';
+        var questioncheckboxdelete = '@Url.Action("DeleteCheckbox", "SurveyDesign")';
+        var questionscoredelete = '@Url.Action("DeleteScore", "SurveyDesign")';
+        var questionOrderbydelete = '@Url.Action("DeleteOrderby", "SurveyDesign")';
+        var questionMultiFillblankdelete = '@Url.Action("DeleteMultiFillblank", "SurveyDesign")';
+        var questionDeleteChenColumn = '@Url.Action("DeleteChenColumn", "SurveyDesign")';
+        var questionDeleteChenRow = '@Url.Action("DeleteChenRow", "SurveyDesign")';
+</script>
+
+@section css{
+    <link href="/content/css/design-survey.css?t=@DateTime.Now.Ticks" rel="stylesheet" type="text/css" />
+}
+@section script{
+    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+    <script type="text/javascript" charset="utf-8" src="/content/js/plugs/ueditor1_4_3_3-utf8-net/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/content/js/plugs/ueditor1_4_3_3-utf8-net/ueditor.all.min.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="/content/js/plugs/ueditor1_4_3_3-utf8-net/lang/zh-cn/zh-cn.js"></script>
+    <script type="text/javascript" src="/content/js/dw/dw-design-init.js?t=@DateTime.Now.Ticks"></script>
+    <script type="text/javascript" src="/content/js/dw/address.js"></script>
+}
+@section ExternHtml{
+    @Html.Partial("_Templates")
+}

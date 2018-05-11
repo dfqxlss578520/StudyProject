@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>业主登陆</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/js/plugs/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/content/custom.css" rel="stylesheet">
+    <link href="~/Content/style.min.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name">
+                    <img src="~/Content/images/head.png" />
+                </h1>
+            </div>
+            <h3>业主登录</h3>
+            <p>欢迎您的登录</p>
+            @using (Html.BeginForm("Index", "Auth", FormMethod.Post))
+            {
+                <div class="form-group">
+                    <input type="text" class="form-control" name="phone" id="phone" placeholder="请输入手机号">
+                    <input type="hidden" name="rurl" value="@ViewBag.rurl" id="rurl" />
+                </div>
+                <button type="button" id="btnlogin" class="btn btn-primary block full-width m-b" onclick="checkMobile()">登 录</button>
+                <p class="text-muted text-center" style="color:#ff0000;">
+                    @ViewBag.errorTip
+                </p>
+            }
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
+        if (window.top !== window.self) {
+            window.top.location = window.location;
+        }
+        function checkMobile() {
+            var str = document.getElementById("phone").value;
+            var re = /^1\d{10}$/
+            if (re.test(str)) {
+                $("form").submit();
+            } else {
+                alert("手机号格式错误");
+                document.getElementById("phone").value = '';
+            }
+        }
+    </script>
+</body>
+</html>

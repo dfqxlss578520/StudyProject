@@ -1,0 +1,36 @@
+﻿@using Hyl.Survey.Infrastructure
+@using StackExchange.Profiling;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title&nbsp;&nbsp;调问网</title>
+    <link href="/Content/js/plugs/jquery-ui-1.10.3.custom/css/mycss/jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css" />   
+    <link href="/content/js/plugs/bootstrap-3.3.0-dist/dist/css/bootstrap.css"rel="stylesheet" >
+    <link href="/content/js/plugs/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">      
+    <link href="/Content/css/dw-user.css" rel="stylesheet" type="text/css" />
+    @RenderSection("css", false)
+    <script type="text/javascript" src="/Content/js/plugs/jquery-ui-1.10.3.custom/js/jquery-1.10.1.js"></script>
+    <script type="text/javascript" src="/Content/js/plugs/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js"></script>
+    <script type="text/javascript" src="/Content/js/dw/responsive-width.js"></script>
+    <script type="text/javascript" src="/Content/js/plugs/My97DatePickerBeta/My97DatePicker/WdatePicker.js"></script>
+    <script src="/content/js/plugs/bootstrap-3.3.0-dist/dist/js/bootstrap.js"></script>  
+</head>
+<body>
+    <div id="wrap">
+        <input type="hidden" id="ctx" name="ctx" value="/Content">
+        @Html.Partial("_header")
+        @RenderBody()
+        <div class="dw_foot" style="padding-top:20px;">
+            @Html.Partial("_footer")
+        </div>
+    </div>
+    @RenderSection("ExternHtml",false)
+    <script type="text/javascript">
+        resizeBodyWidth();
+    </script>
+    @RenderSection("script", false)
+    @MiniProfiler.RenderIncludes()
+</body>
+</html>

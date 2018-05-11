@@ -1,0 +1,327 @@
+﻿@using Hyl.Core.Domain.Survey
+@using Hyl.Core.Helpers.Utility
+@using Hyl.Survey.Infrastructure
+@using Hyl.Core.Domain.Survey.ViewModel;
+@model SurveyDirectory
+@{
+    ViewBag.Title = "Collection";
+}
+@section css{
+    <link rel="stylesheet" href="/Content/js/plugs/colpick-jQuery/css/colpick.css" type="text/css" />
+    <link href="~/Content/css/surveyshare.css" rel="stylesheet" />
+}
+<input type="hidden" id="id" name="id" value="@Model.Id">
+<input type="hidden" id="surveyState" name="surveyState" value="@Model.SurveyState">
+@Html.Partial("_CollectionAndAnalysis", new CollectionAndAnalysisViewModel() { SurveyId = Model.Id, CollectionAndAnalysis = CollectionAndAnalysis.Collection })
+<div style="clear: both;"></div>
+<div id="dwBody">
+    <div id="dwBodyContent" class="bodyCenter" style="border:1px solid #C1DAEC;">
+        <div id="dwBodyUser">
+            <div class="surveyCollectMiddle">
+                <div class="surveyCollectTop">
+                    <div class="surveyCollectTitleDiv">
+                        <span class="surveyCollectTitle">@Html.Raw(Model.SurveyName)</span>
+                        <div class="scmTabRight">
+                            @if (Model.SurveyState == 0)
+                            {
+                                <a href="" class="surveyStateBtn sbtn25 sbtn25_2" style="color: #599fd1;">发布问卷</a>
+                            }
+                            else if (Model.SurveyState == 1)
+                            {
+                                <a href="" class="surveyStateBtn sbtn25 sbtn25_2">停止收集</a>
+                            }
+                            else if (Model.SurveyState == 2)
+                            {
+                                <a href="" class="surveyStateBtn sbtn25 sbtn25_2">重新打开收集</a>
+                            }
+                        </div>
+                    </div>
+                    <div class="surveyCollectInfoDiv">
+                        <span class="surveyCollectInfoLeft">
+                            状态：<span class="collectInfoSpan surveyStateText">@(Model.SurveyState == 0 ? "设计中" : (Model.SurveyState == 1 ? "收集中" : (Model.SurveyState == 2 ? "收集完成" : "")))</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                            参加人数：<span class="collectInfoSpan">@Model.AnswerNum</span>
+                        </span>
+                        <span class="surveyCollectInfoRight">
+                            发布时间：<span class="collectInfoSpan">@Model.CreateDate.ToString("yyyy年MM月dd日 HH时mm分")</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="surveyCollectMiddleContent" id="publish">
+                    <div class="collect_1_content">
+                        <div style="padding:0px 60px;">
+                            <div style="">
+                                <div class="scmcRightTop">
+                                    <div class="scmcRightTopLeft">
+                                        <div class="scmcRightTopLeftTitle">
+                                            答卷地址
+                                        </div>
+                                        <div class="scmcRightTopLeftNote">下载图片或复制图片地址，通过QQ、Email等工具发送图片给用户</div>
+                                    </div>
+                                </div>
+                                <div style="clear: both;"></div>
+                                <div>
+                                    <div class="scmcSurveyLink">
+                                        <span class="scmcSurveyLinkLeft">&nbsp;</span>
+                                        <span class="scmcSurveyLinkCenter" id="linkTextarea">
+                                            @(Utils.GetHostWithPortUrl() + Url.Action("Index", "Show", new { area = "", id = Model.Id }))
+                                        </span>
+                                        <a href="javascript:void(0);" style="display: block;" class="clipLink clipbtn" data-clipboard-text="@(Utils.GetHostWithPortUrl() + Url.Action("Index", "Show", new {area = "", id = Model.Id}))">
+                                            复制链接
+                                        </a>
+                                        <a target="_blank" href="@(Utils.GetHostWithPortUrl() + Url.Action("Index", "Show", new {area = "", id = Model.Id}))"
+                                           style="margin-left: 12px; background: rgb(130, 144, 154); width: 110px; height: 50px; text-align: center; border-radius: 3px; color: #ffffff;">
+                                            打开
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                            <div style="padding-top: 25px;">
+                                <div class="scmcRightTop">
+                                    <div class="scmcRightTopLeft">
+                                        <div class="scmcRightTopLeftTitle">二维码手机答题</div>
+                                    </div>
+                                    <div style="padding-top: 15px;overflow: auto;clear: both;">
+                                        <div class="scmcSurveyTdCode">
+                                            @Html.GenerateRelayQrCode(Utils.GetHostWithPortUrl() + Url.Action("Index", "Show", new { area = "", id = Model.Id }), 130, 130)
+                                        </div>
+                                        <div class="scmcRightTopRight" style="float: left ;padding-left: 30px;">
+                                            <a href="@Url.Action("QrCode", "Base", new {area = "", qrValue = (Utils.GetHostWithPortUrl() + Url.Action("Index", "Show", new {area = "", id = Model.Id})), w = 500, h = 500, m = 1, download = true})" class="sbtn25 sbtn25_1">
+                                                下载二维码
+                                            </a>
+                                            <div class="scmcRightTopLeftNote" style="width: 100px;padding-top: 25px;">复制下面的问卷链接到QQ，Email等工具中直接发给被用户</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="surveyCollectMiddleContent ui-helper-hidden" id="share">
+                    <div class="collect_1_content">
+                        <div style="padding:0px 60px;">
+                            <div style="">
+                                <div class="scmcRightTop">
+                                    <div class="scmcRightTopLeft">
+                                        <div class="scmcRightTopLeftTitle">
+                                            分享到社交网络
+                                            <!-- <span  id="clipLinkSpan"   style="display: none;font-size:16px;color:#80AA00;">复制成功</span> -->
+                                        </div>
+                                        <div class="scmcRightTopLeftNote">赶快分享您的问卷到各大社交网站，让更多关注您的朋友来回答问卷。</div>
+                                    </div>
+                                </div>
+                                <div style="clear: both;"></div>
+                                <div style="padding-bottom: 20px;">
+                                    <div style="border: 1px solid rgb(234, 231, 231);padding: 5px;">
+                                        <textarea id="shareSurTextarea" rows="5" cols="30">大家好，我刚刚通过调问网制作了一份调查问卷“@Utils.NoHTML(Utils.UrlDecode(Model.SurveyName))”，需要您的帮助，您的意见非常重要。快快来吧帮忙回答。</textarea>
+                                    </div>
+                                    <div style="padding: 5px;background: rgb(234, 231, 231);height: 50px;">
+                                        <div style="float: left;margin-top: 5px;margin-left: 10px;">
+                                            <div class="bdsharebuttonbox">
+                                                <a href="#" class="bds_more" data-cmd="more">分享到：</a>
+                                                <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信">微信</a>
+                                                <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友">QQ好友</a>
+                                                <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间">QQ空间</a>
+                                                <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博">新浪微博</a>
+                                                <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网">人人网</a>
+                                            </div>
+                                            <script>
+                                                window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "1", "bdSize": "16" }, "share": { "bdSize": 16 } };
+                                                with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="surveyCollectMiddleContent ui-helper-hidden" id="sitecomp">
+
+                    <div class="collect_1_content">
+                        <div style="margin: 0px auto; width: 950px;">
+                            <div style="clear: both;"></div>
+                            <div style="padding-top: 10px;">
+                                <div class="scmcRightTop">
+                                    <div class="scmcRightTopLeft">
+                                        <div class="scmcRightTopLeftTitle">通过您的网站收集问卷</div>
+                                    </div>
+                                    <div style="padding-top: 15px;overflow: auto;clear: both;">
+
+                                        <div class="scmcsiteLeft">
+                                            <div class="scmcsiteTitle">1、风格选择</div>
+                                            <div class="scmcsiteLeftContent">
+                                                <div class="scmcsiteLItem">
+                                                    <span>&nbsp;浮&nbsp;&nbsp;动：</span>
+                                                    <label><input type="radio" name="floatPos" value="left" />&nbsp;左边</label>&nbsp;&nbsp;
+                                                    <label><input type="radio" name="floatPos" value="right" checked="checked" />&nbsp;右边</label>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </div>
+                                            </div>
+                                            <div class="siteColorContent">
+                                                <div id="leftColorContent">
+                                                    <div style="color: #6C6C6C;">
+                                                        &nbsp;&nbsp;
+                                                        <label><input type="radio" name="colorbox" checked="checked" value="1" />&nbsp;背景色</label>&nbsp;&nbsp;
+                                                        <label><input type="radio" name="colorbox" value="2" />&nbsp;文字色</label>
+                                                    </div>
+                                                    <div id="site_color_box">&nbsp;</div>
+                                                </div>
+                                                <div id="site_show_top">
+                                                    <div style="text-align: center;font-size: 10px;color: #9A9A9A;">上</div>
+                                                    <div id="site_show_top_slider" style="height:155px;margin:5px auto;"></div>
+                                                    <div style="text-align: center;font-size: 10px;color: #9A9A9A;">下</div>
+                                                    <div style="margin: 0px auto;width: 75px;color: #636363;font-size: 12px;margin-top: 2px;">高&nbsp;度：<input id="showPosition" type="text" size="3" value="60" style="font-size:12px;color: #555;outline: none;padding: 1px;padding-left:2px;background: #f3f3f3;border: 1px solid #BDBDBD;"></div>
+                                                </div>
+                                                <div id="site_show_right"></div>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                            <div style="color: #9B9B9B;font-size: 14px;padding-top: 10px;">高度与背景色可自动调节，请从页面左右侧预览实际效果。</div>
+
+                                        </div>
+                                        <div class="scmcsiteRight">
+                                            <div class="scmcsiteTitle">2、代码复制</div>
+                                            <div class="scmcsiteRightContent">
+                                                <textarea id="compCodeText" class="scmcsiteRCEdit"></textarea>
+                                                <div style="text-align: center;padding-top: 8px;">
+                                                    <a href="javascript:void(0);" class="sbtn25 sbtn25_1 compTextareaCodeBtn" id="compTextareaCodeBtn" data-clipboard-target="#compCodeText">复制代码</a>
+                                                </div>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                            <div style="color: #9B9B9B;font-size: 14px;padding-top: 10px;">高度与背景色可自动调节，请从页面左右侧预览实际效果。</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="priviewContent" class="priviewContentFixed">
+                        <div id="webSiteLeftCode">
+                            <div id="webSiteFixedLeft" class="websiteFixed" style="position: fixed;left: 0px;top: 520px;z-index: 9999;display: none;">
+                                <a class="websiteAId" href="@(Utils.GetHostWithPortUrl() + Url.Action("Index", "Show", new { area = "", id = Model.Id }))" style="background: #1C658B;width: 15px;background: #8CBCD1;display: block;padding: 5px;padding-top: 10px;padding-bottom:10px;font-weight: bold;color: white;cursor: pointer;float: right;vertical-align: middle;text-decoration: none;font-size: 12px;-moz-border-radius-topright: 5px;-webkit-border-top-right-radius: 5px;-khtml-border-top-right-radius: 5px;border-top-right-radius: 5px;-moz-border-radius-bottomright: 5px;-webkit-border-bottom-right-radius: 5px;-khtml-border-bottom-right-radius: 5px;border-bottom-right-radius: 5px;">问卷调查</a>
+                            </div>
+                        </div>
+
+                        <div id="webSiteRightCode">
+                            <div id="webSiteFixedRight" class="websiteFixed" style="position: fixed;right: 0px;top: 520px;z-index: 9999;">
+                                <a class="websiteAId" href="@(Utils.GetHostWithPortUrl() + Url.Action("Index", "Show", new { area = "", id = Model.Id }))" style="background: #1C658B;width: 15px;background: #8CBCD1;display: block;padding: 5px;padding-top: 10px;padding-bottom:10px;font-weight: bold;color: white;cursor: pointer;float: right;vertical-align: middle;text-decoration: none;font-size: 12px;-moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px;-khtml-border-top-left-radius: 5px;border-top-left-radius: 5px;-moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px;-khtml-border-bottom-left-radius: 5px; border-bottom-left-radius: 5px;">问卷调查</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="surveyCollectMiddleContent ui-helper-hidden" id="weixin">
+
+                    <div class="collect_1_content">
+                        <div class="collect_weixin_content">
+
+                            <div style="clear: both;"></div>
+
+                            <div style="margin: 0px auto; width: 930px;padding-top: 10px;">
+                                <div class="scmcRightTop">
+                                    <div class="scmcRightTopLeft">
+                                        <div class="scmcRightTopLeftTitle">通过二维码发送或分享给好友</div>
+                                    </div>
+                                    <div style="padding-top: 15px;overflow: auto;clear: both;">
+                                        <div class="scmcSurveyTdCode"><img alt="" src="@Url.Action("QrCode", "Base", new { area = "", qrValue = (Utils.GetHostWithPortUrl() + Url.Action("Index", "Show", new { area = "", id = Model.Id })),w=130,h =130 })" height="130"></div>
+                                        <div class="scmcRightTopRight" style="float: left ;padding-left: 30px;">
+                                            <a href="@Url.Action("QrCode", "Base", new { area = "", qrValue = (Utils.GetHostWithPortUrl() + Url.Action("Index", "Show", new { area = "", id = Model.Id })),w=500,h =500,m=1 ,download=true })" class="sbtn25 sbtn25_1">下载二维码</a>
+                                            <div class="scmcRightTopLeftNote" style="padding-top: 25px;">复制下面的问卷链接到QQ，Email等工具中直接发给被用户</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="">
+                                <div class="weixinSteps">
+                                    <div class="wxinTitle">发送或分享给好友</div>
+                                    <div class="wxinContent">
+                                        <ul>
+                                            <li><span>1、使用微信扫一扫功能。</span><img src="/content/images/img1/weixin_a_s1.png"></li>
+                                            <li><span>2、打开问卷后，点击右上角的“分享”按钮。</span><img src="/content/images/img1/weixin_a_s2.png"></li>
+                                            <li><span>3、选择“发送给朋友”或“分享到朋友圈”。</span><img src="/content/images/img1/weixin_a_s3.png"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div style="margin: 0px auto; width: 930px;margin-top: 30px;">
+                                <div>
+                                    <div class="scmcRightTop">
+                                        <div class="scmcRightTopLeft">
+                                            <div class="scmcRightTopLeftTitle">
+                                                通过微信公众账号
+                                                <span style="font-size:14px;color: #9B9A9A;margin-left: 15px;">复制下面的问卷链接到QQ，Email等工具中直接发给被用户</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="clear: both;">
+                                        <div>
+                                            <div class="scmcSurveyLink">
+                                                <span class="scmcSurveyLinkLeft">&nbsp;</span>
+                                                <span class="scmcSurveyLinkCenter" id="linkTextarea">@(Utils.GetHostWithPortUrl() + Url.Action("Index", "Show", new { area = "", id = Model.Id }))</span>
+                                                
+                                                <a href="javascript:void(0);" style="display: block;" class="clipLink clipbtn" id="clipLink"
+                                                   data-clipboard-text="@(Utils.GetHostWithPortUrl() + Url.Action("Index", "Show", new {area = "", id = Model.Id}))">
+                                                    复制链接
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+
+                            <div style="margin-top: 15px;">
+                                <div class="weixinSteps">
+                                    <div class="wxinTitle">通过微信公众账号</div>
+                                    <div class="wxinContent">
+                                        <ul>
+                                            <li><span>1、打开公众账号</span><img src="/content/images/img1/weixin_b_s3.png" width="260"></li>
+                                            <li><span>2、打开问卷后，点击右上角的“分享”按钮。</span><img src="/content/images/img1/weixin_b_s4.jpeg" width="260"></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var saveSurveyStateUrl = '@Url.Action("SurveyState","Survey")';
+    var editSurveyDesignUrl = '@Url.Action("Index", "SurveyDesign")';
+    var publishSurveyUrl = '@Url.Action("Publish","Survey")';
+</script>
+<script type="text/javascript" src="/Content/js/plugs/colpick-jQuery/js/colpick.js"></script>
+<script src="~/Content/js/plugs/clipboard/clipboard.min.js"></script>
+<script src="~/Content/js/dw/surveyshare.js"></script>
+<script type="text/javascript" src="/Content/js/dw/collect.js"></script>
+<script>
+    $(function() {
+        if ('@ViewBag.act' =='share') {
+            $(".collectTab").eq(1).find("span:last").click();
+        }
+        else if ('@ViewBag.act' =='sitecomp') {
+            $(".collectTab").eq(2).find("span:last").click();
+        } else if ('@ViewBag.act' =='weixin') {
+            $(".collectTab").eq(3).find("span:last").click();
+        }
+        else if('@ViewBag.act' == 'publish') {
+            $(".collectTab").eq(0).find("span:last").click();
+        }
+    })
+</script>

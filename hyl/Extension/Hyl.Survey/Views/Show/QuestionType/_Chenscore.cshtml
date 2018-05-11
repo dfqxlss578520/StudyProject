@@ -1,0 +1,80 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Helpers.Utility;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" class="quType" value="CHENSCORE">
+        <input type="hidden" class="quId" value="@question.Id">
+        <input type="hidden" class="orderById" value="@question.OrderById" />
+        <input type="hidden" class="isRequired" value="@question.IsRequired">
+        <div class="quLogicInputCase">
+            @foreach (var quLogicEn in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(quLogicEn))">
+                    <input type="hidden" class="cgQuItemId" value="@quLogicEn.QuItemId" />
+                    <input type="hidden" class="skQuId" value="@quLogicEn.SkipToQuId" />
+                    <input type="hidden" class="logicId" value="@quLogicEn.Id" />
+                    <input type="hidden" class="logicType" value="@quLogicEn.LogicType" />
+                </div>
+            }
+        </div>
+        <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="item_qu_@(question.QuType)_@(question.Id)_" />
+    </div>
+    <div class="surveyQuItem">
+
+        <div class="surveyQuItemContent">
+            <div class="quCoTitle">
+                <div class="quCoNum">@(Model.Questions.IndexOf(question) + 1)、</div>
+                <div class="editAble quCoTitleEdit">@Html.Raw(Utils.HtmlDecode(question.QuName))</div>
+            </div>
+
+            <div class="quCoItem">
+                <div class="quCoItemLeftChenTableDiv">
+                    <table class="quCoChenTable">
+                        <tr>
+                            <td></td>
+                            @foreach (var item in question.QuChenColumns)
+                            {
+                                <td class="quChenColumnTd"><label class="editAble quCoOptionEdit">@Html.Raw(Utils.HtmlDecode(item.OptionName))</label></td>
+                            }
+                        </tr>
+                        @foreach (var item in question.QuChenRows)
+                        {
+                            <tr class="dwQuCoChenRowTr">
+                                <td class="quChenRowTd">
+                                    <label class="editAble quCoOptionEdit">@Html.Raw(Utils.HtmlDecode(item.OptionName))</label>
+                                    <input type="hidden" name="item_qu_@(question.QuType)_@(question.Id)_@(item.Id)" value="cs_item_qu_@(question.QuType)_@(question.Id)_@(item.Id)_" />
+                                </td>
+                                @foreach (var column in question.QuChenColumns)
+                                {
+                                    <td>
+                                        <div class="dwQuScoreOptionItemContent">
+                                            <input type="hidden" class="dwChenInputTemp" disabled="disabled" value="@(item.Id):@column.Id">
+                                            <select name="cs_item_qu_@(question.QuType)_@(question.Id)_@(item.Id)_@column.Id" class="quChenScoreSelect">
+                                                <option value="0">-评分-</option>
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    <option value="@i">@(i)分</option>
+                                                }
+                                            </select>
+                                            <input type="hidden" class="quchenrowid" value="@item.Id">
+                                            <input type="hidden" class="quchencolid" value="@column.Id">
+                                            <input type="hidden" class="answerTag" value="0">
+                                        </div>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
+
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+
+    </div>
+</div>

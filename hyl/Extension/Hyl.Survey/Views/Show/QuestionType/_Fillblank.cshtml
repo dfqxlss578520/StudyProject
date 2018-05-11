@@ -1,0 +1,54 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Helpers.Utility;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" class="quType" value="FILLBLANK">
+        <input type="hidden" class="quId" value="@question.Id">
+        <input type="hidden" class="orderById" value="@question.OrderById" />
+        <input type="hidden" class="isRequired" value="@question.IsRequired">
+        <input type="hidden" class="checkType" value="@question.CheckType">
+        <input type="hidden" class="answerTag" value="0">
+        <div class="quLogicInputCase">
+            @foreach (var quLogicEn in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(quLogicEn))">
+                    <input type="hidden" class="cgQuItemId" value="@quLogicEn.QuItemId" />
+                    <input type="hidden" class="skQuId" value="@quLogicEn.SkipToQuId" />
+                    <input type="hidden" class="logicId" value="@quLogicEn.Id" />
+                    <input type="hidden" class="logicType" value="@quLogicEn.LogicType" />
+                </div>
+            }
+        </div>
+    </div>
+    <div class="surveyQuItem">
+        <div class="surveyQuItemContent">
+            <div class="quCoTitle">
+                <div class="quCoNum">@(Model.Questions.IndexOf(question) + 1)、</div>
+                <div class="editAble quCoTitleEdit">@Html.Raw(Utils.HtmlDecode(question.QuName))</div>
+            </div>
+            <div class="quCoItem">
+                <ul>
+                    <li class="quCoItemUlLi">
+                        <div class="quFillblankItem">
+                            @if (question.AnswerInputRow > 1)
+                            {
+                                <textarea name="qu_@(question.QuType + "_" + question.Id)" rows="@question.AnswerInputRow" style="width:@(question.AnswerInputWidth > 0 ? question.AnswerInputWidth : 300)px;" class="inputSytle_2 fillblankInput"></textarea>
+                            }
+                            else
+                            {
+                                <input type="text" name="qu_@(question.QuType + "_" + question.Id)" style="width:@(question.AnswerInputWidth > 0 ? question.AnswerInputWidth : 300)px;" class="inputSytle_1 fillblankInput">
+                            }
+                            <div class="dwComEditMenuBtn"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>

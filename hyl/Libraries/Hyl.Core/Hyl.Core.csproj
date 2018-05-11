@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{962B866A-2E36-4CD6-B733-E0F84C91EAD4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hyl.Core</RootNamespace>
+    <AssemblyName>Hyl.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.Mvc5.4.0.2\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper.Contrib, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Dapper.Contrib.1.50.0\lib\net45\Dapper.Contrib.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz, Version=2.6.0.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Quartz.2.6.0\lib\net40\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="RedLock.StrongName, Version=1.7.5.0, Culture=neutral, PublicKeyToken=1dffde0a6c007f07, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\RedLock.net.StrongName.1.7.5\lib\net45\RedLock.StrongName.dll</HintPath>
+    </Reference>
+    <Reference Include="StackExchange.Redis.StrongName, Version=1.2.6.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\StackExchange.Redis.StrongName.1.2.6\lib\net46\StackExchange.Redis.StrongName.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseEntity.cs" />
+    <Compile Include="Caching\CacheExtensions.cs" />
+    <Compile Include="Caching\ICacheManager.cs" />
+    <Compile Include="Caching\IRedisConnectionWrapper.cs" />
+    <Compile Include="Caching\MemoryCacheManager.cs" />
+    <Compile Include="Caching\PerRequestCacheManager.cs" />
+    <Compile Include="Caching\RedisCacheManager.cs" />
+    <Compile Include="Caching\RedisConnectionWrapper.cs" />
+    <Compile Include="Configuration\BaseConfig.cs" />
+    <Compile Include="Configuration\HylWebConfig.cs" />
+    <Compile Include="Configuration\Survey\SurveyConfig.cs" />
+    <Compile Include="DependencyRegistrar\CoreDependencyRegistrar.cs" />
+    <Compile Include="DependencyRegistrar\IDependencyRegistrar.cs" />
+    <Compile Include="Domain\JobsDomain\TomJob.cs" />
+    <Compile Include="Domain\MemberCenters\AppInfos.cs" />
+    <Compile Include="Domain\MemberCenters\NewUsersModel.cs" />
+    <Compile Include="Domain\MemberCenters\Users.cs" />
+    <Compile Include="Domain\MemberCenters\UserSnsSRelation.cs" />
+    <Compile Include="Domain\MemberCenters\UserSsoValidation.cs" />
+    <Compile Include="Domain\MemberCenters\UsersSsoTokens.cs" />
+    <Compile Include="Domain\PageDomain\Page.cs" />
+    <Compile Include="Domain\Survey\AnswerCheckbox.cs" />
+    <Compile Include="Domain\Survey\AnswerChenCheckbox.cs" />
+    <Compile Include="Domain\Survey\AnswerChenFillblank.cs" />
+    <Compile Include="Domain\Survey\AnswerChenRadio.cs" />
+    <Compile Include="Domain\Survey\CheckType.cs" />
+    <Compile Include="Domain\Survey\EnumConfig.cs" />
+    <Compile Include="Domain\Survey\QuType.cs" />
+    <Compile Include="Domain\Survey\SurveyDesignResult.cs" />
+    <Compile Include="Domain\Survey\SurveyStyle.cs" />
+    <Compile Include="Domain\Survey\ViewModel\AnswerDataCross.cs" />
+    <Compile Include="Domain\Survey\ViewModel\AnswerGroupViewModel.cs" />
+    <Compile Include="Domain\Survey\ViewModel\CollectionAndAnalysisViewModel.cs" />
+    <Compile Include="Domain\Survey\ViewModel\ResultViewModel.cs" />
+    <Compile Include="Domain\Survey\ViewModel\SurveyDirectoryViewModel.cs" />
+    <Compile Include="Domain\Survey\YesnoOption.cs" />
+    <Compile Include="Helpers\AutoMapperHelper.cs" />
+    <Compile Include="Helpers\TypeFinder\AppDomainTypeFinder.cs" />
+    <Compile Include="Helpers\TypeFinder\ITypeFinder.cs" />
+    <Compile Include="Helpers\TypeFinder\WebAppTypeFinder.cs" />
+    <Compile Include="Helpers\Utility\CacheHelper.cs" />
+    <Compile Include="Helpers\Utility\DataTableHelper.cs" />
+    <Compile Include="Helpers\Utility\DNTRequest.cs" />
+    <Compile Include="Helpers\Utility\Encrypt.cs" />
+    <Compile Include="Helpers\Utility\Extendsion.cs" />
+    <Compile Include="Helpers\Utility\TypeConverter.cs" />
+    <Compile Include="Helpers\Utility\Utils.cs" />
+    <Compile Include="Helpers\Utility\Validator.cs" />
+    <Compile Include="Infrastructure\ContainerManager.cs" />
+    <Compile Include="Infrastructure\EngineContext.cs" />
+    <Compile Include="Infrastructure\HylEngine.cs" />
+    <Compile Include="Infrastructure\IEngine.cs" />
+    <Compile Include="Infrastructure\Singleton.cs" />
+    <Compile Include="IServicesDependency.cs" />
+    <Compile Include="Job\AutofacJobFactory.cs" />
+    <Compile Include="Job\IJobManager.cs" />
+    <Compile Include="Job\QuartzManager.cs" />
+    <Compile Include="Logs\DefaultLog.cs" />
+    <Compile Include="Logs\ILogs.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domain\Survey\AnswerChenScore.cs" />
+    <Compile Include="Domain\Survey\AnswerMultiFillblank.cs" />
+    <Compile Include="Domain\Survey\AnswerFillblank.cs" />
+    <Compile Include="Domain\Survey\AnswerOrder.cs" />
+    <Compile Include="Domain\Survey\AnswerRadio.cs" />
+    <Compile Include="Domain\Survey\AnswerScore.cs" />
+    <Compile Include="Domain\Survey\ImportError.cs" />
+    <Compile Include="Domain\Survey\MailInviteInbox.cs" />
+    <Compile Include="Domain\Survey\QuestionCheckbox.cs" />
+    <Compile Include="Domain\Survey\QuestionChenColumn.cs" />
+    <Compile Include="Domain\Survey\QuestionChenRow.cs" />
+    <Compile Include="Domain\Survey\Question.cs" />
+    <Compile Include="Domain\Survey\QuestionBank.cs" />
+    <Compile Include="Domain\Survey\QuestionGroup.cs" />
+    <Compile Include="Domain\Survey\QuestionLogic.cs" />
+    <Compile Include="Domain\Survey\QuestionMultiFillblank.cs" />
+    <Compile Include="Domain\Survey\QuestionOrderby.cs" />
+    <Compile Include="Domain\Survey\QuestionRadio.cs" />
+    <Compile Include="Domain\Survey\QuestionScore.cs" />
+    <Compile Include="Domain\Survey\SmtpServer.cs" />
+    <Compile Include="Domain\Survey\SurveyAnswer.cs" />
+    <Compile Include="Domain\Survey\SurveyDetail.cs" />
+    <Compile Include="Domain\Survey\SurveyDirectory.cs" />
+    <Compile Include="Domain\Survey\SurveyMailInvite.cs" />
+    <Compile Include="Domain\Survey\SurveyReqUrl.cs" />
+    <Compile Include="Domain\Survey\SurveyStats.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

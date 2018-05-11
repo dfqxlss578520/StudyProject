@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="Hyl.WebMvc" namespace="Hyl.WebMvc.Models" default-lazy="true">
+
+  <class name="Hyl.WebMvc.Models.WindDirection" table="[dbo].[WindDirection]" lazy="true" dynamic-insert="true" dynamic-update="true">
+    <id name ="Id" column="Id">
+      <generator class="identity"></generator>
+    </id>
+    <property name="Code" column="Code"/>
+    <property name="CnName" column="CnName"/>
+    <property name="EnName" column="EnName"/>
+  </class>
+
+</hibernate-mapping>

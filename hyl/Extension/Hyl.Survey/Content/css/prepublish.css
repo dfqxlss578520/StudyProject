@@ -1,0 +1,10 @@
+﻿.edui-editor-iframeholder { display: none; }
+.edui-default .edui-editor-toolbarboxouter { border: none !important; }
+#resultProgressRoot .ui-slider-range { background: #B01820; }
+#resultProgressRoot .ui-slider-handle { border-color: #B01820; }
+#resultProgressRoot { width: 220px; z-index: 200; position: absolute; right: 60px; }
+.progress-label { font-size: 14px; font-family: "微软雅黑"; margin: 0px auto; text-align: center; line-height: 1.4em; color: #83AE00; }
+.progressbarDiv { height: 6px !important; box-shadow: none !important; border: 1px solid #83AE00; }
+    .progressbarDiv .ui-progressbar-value { background: #83AE00; border: none; }
+.ui-progressbar .ui-progressbar-value { margin: 0px; }
+.ui-progressbar { position: relative; }

@@ -1,0 +1,50 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>泓源林</title>
+    <meta name="keywords" content="泓源林">
+    <meta name="description" content="泓源林">
+    <link href="/Content/theme/css/bootstrap.min14ed.css" rel="stylesheet">
+    <link href="/Content/theme/css/font-awesome.min93e3.css" rel="stylesheet">
+    <link href="/Content/theme/css/animate.min.css" rel="stylesheet">
+    <link href="/Content/theme/css/style.min862f.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+    <div class="middle-box text-center loginscreen  animated fadeInDown">
+        <div>
+            <div>
+                <h2 class="logo-name" style="font-size: 90px; letter-spacing: normal;">泓源林</h2>
+            </div>
+            @*<h3>欢迎登录</h3>*@
+            @using (Html.BeginForm("Index", "Authorize", FormMethod.Post, new { @class = "m-t" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <input type="text" name="UserName" class="form-control" placeholder="用户名" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="Password" class="form-control" placeholder="密码" required="">
+                </div>
+                <input type="hidden" name="returnurl" value="@ViewBag.returnurl" />
+                <input type="hidden" name="CompanyId" value="@ViewBag.CompanyId" />
+
+                <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
+                @*<p class="text-muted text-center"> <a href="#"><small>忘记密码了？</small></a> | <a href="register.html">注册一个新账号</a>
+                    </p>*@
+            }
+        </div>
+    </div>
+    <script>if (window.top !== window.self) { window.top.location = window.location; }</script>
+    <script src="/Content/theme/js/jquery.min.js"></script>
+    <script src="/Content/theme/js/bootstrap.min.js"></script>
+</body>
+</html>

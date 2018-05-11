@@ -1,0 +1,50 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Helpers.Utility;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" class="quType" value="ORDERQU">
+        <input type="hidden" class="quId" value="@question.Id">
+        <input type="hidden" class="orderById" value="@question.OrderById" />
+        <input type="hidden" class="isRequired" value="@question.IsRequired">
+        <input type="hidden" class="answerTag" value="0">
+        <div class="quLogicInputCase">
+            @foreach (var quLogicEn in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(quLogicEn))">
+                    <input type="hidden" class="cgQuItemId" value="@quLogicEn.QuItemId" />
+                    <input type="hidden" class="skQuId" value="@quLogicEn.SkipToQuId" />
+                </div>
+            }
+        </div>
+        <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="item_qu_@(question.QuType)_@(question.Id)_" />
+    </div>
+    <div class="surveyQuItem">
+        <div class="surveyQuItemContent">
+            <fieldset data-role="controlgroup">
+                <legend>
+                    <span class="quTitleNum">@(Model.Questions.IndexOf(question))、</span>
+                    <span class="quTitleText">@Html.Raw(Utils.HtmlDecode(question.QuName))</span>
+                </legend>
+                <div class="ui-controlgroup-controls ">
+                    @foreach (var item in question.QuOrderbies)
+                    {
+                        <div class="ui-checkbox m_clickQuOrderItem">
+                            <label class="ui-btn ui-corner-all ui-btn-inherit itemOptionname" style="text-align: left;">@Html.Raw(Utils.HtmlDecode(item.OptionName))</label>
+                            <input value="@item.Id" type="hidden" class="optionId">
+                            <div class="m_orderby_num">0</div>
+                            <div style="display: none;">
+                                <input name="item_qu_@(question.QuType)_@(question.Id)_@item.Id" value="0" type="hidden" class="quOrderItemHidInput">
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </fieldset>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-configuration xmlns="urn:nhibernate-configuration-2.2">
+  
+  <session-factory>
+    <property name="connection.driver_class">NHibernate.Driver.SqlClientDriver</property>
+    <property name="connection.connection_string">Data Source=.;user=sa;password=tomkluas;Initial Catalog=Weather</property>
+    <property name="dialect">NHibernate.Dialect.MsSql2012Dialect</property>
+    <property name="show_sql">true</property>
+    <property name="hbm2ddl.auto">update</property>
+    
+    <!--Mapping files 嵌入式资源 表格table 名字不可以是user-->
+    <mapping  assembly="Hyl.WebMvc"/>
+  </session-factory>
+
+</hibernate-configuration>

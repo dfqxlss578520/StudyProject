@@ -1,0 +1,60 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Helpers.Utility;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" class="quType" value="CHENCHECKBOX">
+        <input type="hidden" class="quId" value="@question.Id">
+        <input type="hidden" class="orderById" value="@question.OrderById" />
+        <input type="hidden" class="isRequired" value="@question.IsRequired">
+        <div class="quLogicInputCase">
+            @foreach (var quLogicEn in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(quLogicEn))">
+
+                    <input type="hidden" class="cgQuItemId" value="@quLogicEn.QuItemId" />
+                    <input type="hidden" class="skQuId" value="@quLogicEn.SkipToQuId" />
+                    <input type="hidden" class="logicId" value="@quLogicEn.Id" />
+                    <input type="hidden" class="logicType" value="@quLogicEn.LogicType">
+                </div>
+            }
+        </div>
+        <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="tag_qu_@(question.QuType)_@(question.Id)_" />
+    </div>
+    <div class="surveyQuItem">
+
+        <div class="surveyQuItemContent">
+            <div class="quCoTitle">
+                <legend>
+                    <span class="quTitleNum">@(Model.Questions.IndexOf(question))、</span>
+                    <span class="quTitleText">@Html.Raw(Utils.HtmlDecode(question.QuName))</span>
+                </legend>
+            </div>
+
+            <div class="quCoItem">
+                @foreach (var item in question.QuChenRows)
+                {
+                    <input type="hidden" name="item_qu_@(question.QuType)_@(question.Id)_@item.Id" value="ck_item_qu_@(question.QuType)_@(question.Id)_@(item.Id)_" />
+                    <input type="hidden" class="answerTag" value="0">
+                    <fieldset data-role="controlgroup" class="dwQuCoChenRowTr">
+                        <legend>@Html.Raw(Utils.HtmlDecode(item.OptionName))</legend>
+                        @foreach (var colitem in question.QuChenColumns)
+                        {
+                            <div class="dwQuOptionItemContent">
+                                <label for="ck_item_qu_@(question.QuType)_@(question.Id)_@(item.Id)_@colitem.Id">@Html.Raw(Utils.HtmlDecode(colitem.OptionName))</label>
+                                <input type="hidden" class="dwChenInputTemp" disabled="disabled" value="@(item.Id):@(colitem.Id)"/>
+                                <input id="ck_item_qu_@(question.QuType)_@(question.Id)_@(item.Id)_@colitem.Id" name="ck_item_qu_@(question.QuType)_@(question.Id)_@(item.Id)_@colitem.Id" value="@colitem.Id" type="checkbox"/>
+                                <input type="hidden" class="quchenrowid" value="@item.Id"/>
+                            </div>
+                        }
+                    </fieldset>
+                }
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+</div>

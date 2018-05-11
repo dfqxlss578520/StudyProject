@@ -1,0 +1,65 @@
+﻿@using Hyl.Core.Domain.Survey;
+@using Hyl.Core.Helpers.Utility;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" class="quType" value="ORDERQU">
+        <input type="hidden" class="quId" value="@question.Id">
+        <input type="hidden" class="orderById" value="@question.OrderById" />
+        <input type="hidden" class="isRequired" value="@question.IsRequired">
+        <input type="hidden" class="answerTag" value="0">
+        <div class="quLogicInputCase">
+            @foreach (var quLogicEn in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(quLogicEn))">
+                    <input type="hidden" class="cgQuItemId" value="@quLogicEn.QuItemId" />
+                    <input type="hidden" class="skQuId" value="@quLogicEn.SkipToQuId" />
+                </div>
+            }
+        </div>
+        <input type="hidden" name="qu_@(question.QuType)_@(question.Id)" value="item_qu_@(question.QuType)_@(question.Id)_" />
+    </div>
+    <div class="surveyQuItem">
+        <div class="surveyQuItemContent">
+            <div class="quCoTitle">
+                <div class="quCoNum">@(Model.Questions.IndexOf(question) + 1)、</div>
+                <div class="editAble quCoTitleEdit">@Html.Raw(Utils.HtmlDecode(question.QuName))</div>
+            </div>
+            <div class="quCoItem quOrderByCoItem">
+                <div class="quOrderByRight">
+                    <table class="quOrderByTable" style="padding:5px;">
+                        @foreach (var item in question.QuOrderbies)
+                        {
+                            <tr class="quOrderByTableTr">
+                                <td class="quOrderyTableTd">
+                                    @(question.QuOrderbies.IndexOf(item) + 1)
+                                </td>
+                                <td class="quOrderTabConnect"></td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+                <div class="quOrderByLeft">
+                    <ul class="quOrderByLeftUl">
+                        @foreach (var item in question.QuOrderbies)
+                        {
+                            <li class="quCoItemUlLi">
+                                <label class="editAble quCoOptionEdit">
+                                    @Html.Raw(Utils.HtmlDecode(item.OptionName))
+                                    <input name="item_qu_@(question.QuType)_@(question.Id)_@item.Id" value="1" type="hidden" class="quOrderItemHidInput">
+                                    <input type="hidden" class="optionId" value="@item.Id" />
+                                </label>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        </div>
+
+    </div>
+</div>

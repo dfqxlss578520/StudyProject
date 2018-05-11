@@ -1,0 +1,54 @@
+﻿@using Hyl.Survey.Infrastructure
+<div id="header">
+    <div id="headerCenter" class="bodyCenter">
+        <div class="header_Item header_logo">
+
+            <a href="@Url.Action("Index","Survey")"><img alt="调问网" src="/Content/images/logo/logo1.png" align="middle"><span class="titleTempSpan">试用版</span></a>
+        </div>
+        @if (!WebWorkContext.IsAdminLogin)
+        {
+            <div class="header_Item header_menu">
+                <ul>
+                    <!--<li><a href="/" class="active dw-menu-a" id="indexMenu">首页</a></li>-->
+                    <!--<li><a href="/feature.jsp" class="dw-menu-a" id="featureMenu">功能</a></li>-->
+                    <!--<li><a href="${ctx }/survey-model.action" class="dw-menu-a">下载</a></li>-->
+                    <!--<li><a href="${ctx }/survey-model.action" class="dw-menu-a">帮助</a></li>-->
+                    <!--<li><a href="${ctx }/survey-model.action" class="dw-menu-a">GITHUB</a></li>-->
+                    <!--<li><a href="http://support.diaowen.net/" class="dw-menu-a" id="helpMenu">帮助</a></li>-->
+                </ul>
+            </div>
+            <div class="header_Item header_user" style="float: right;">
+                <a href="@Url.Action("Index","Login")" class="btn-a-1">登录</a>
+            </div>
+        }
+        else
+        {
+            <div class="header_Item header_menu">
+                <ul>
+                    <li><a href="@Url.Action("Index","Survey")">首页</a></li>
+                    <li><a href="@Url.Action("Index","Survey")">我的问卷</a></li>
+                </ul>
+            </div>
+            <div class="header_Item header_user" style="float: right;margin-top: 12px;position: relative;zoom: 1;z-index: 365;">
+                <a href="#" class="clickHideUserMenu">
+                    <span class="head_use_name">
+                        @WebWorkContext.AdminUser.UserName
+                    </span>
+                    <span class="header_user_icon">&nbsp;</span>
+                </a>
+                <div class="a-w-sel a-w-sel-head" style="">
+                    <div class="w-sel" style="margin-top: 16px;">
+                        <div class="selc">
+                            <div class="selcc tbtag">
+                                <div class="seli"><a class="nx-1" href="#">修改密码</a></div>
+                                <div class="seli"><a class="nx-7" href="#">帮助及反馈</a></div>
+                                <div class="seli"><a class="nx-8" href="@Url.Action("LoginOut","Auth")">退出</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div style="clear: both;"></div>
+</div>

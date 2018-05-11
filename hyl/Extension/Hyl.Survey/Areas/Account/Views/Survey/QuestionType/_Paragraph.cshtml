@@ -1,0 +1,39 @@
+﻿@using Hyl.Core.Domain.Survey;
+@model SurveyDirectory
+@{
+    var question = (Question)ViewData["question"];
+}
+<div class="surveyQuItemBody">
+    <div class="initLine"></div>
+    <div class="quInputCase" style="display: none;">
+        <input type="hidden" name="quType" value="PARAGRAPH">
+        <input type="hidden" name="quId" value="@question.Id">
+        <input type="hidden" name="orderById" value="@question.OrderById" />
+        <input type="hidden" name="saveTag" value="1">
+        <input type="hidden" name="hoverTag" value="0">
+        <input type="hidden" name="isRequired" value="@question.IsRequired">
+        <input type="hidden" name="hv" value="@question.Hv">
+        <input type="hidden" name="randOrder" value="@question.RandOrder">
+        <input type="hidden" name="cellCount" value="@question.CellCount">
+        <div class="quLogicInputCase">
+            <input type="hidden" name="quLogicItemNum" value="@question.QuestionLogics.Count">
+            @foreach (var logic in question.QuestionLogics)
+            {
+                <div class="quLogicItem quLogicItem_@(question.QuestionLogics.IndexOf(logic))">
+                    <input type="hidden" name="quLogicId" value="@logic.Id" />
+                    <input type="hidden" name="cgQuItemId" value="@logic.QuItemId" />
+                    <input type="hidden" name="skQuId" value="@logic.SkipToQuId" />
+                    <input type="hidden" name="visibility" value="1">
+                    <input type="hidden" name="logicSaveTag" value="1">
+                </div>
+            }
+        </div>
+    </div>
+    <div class="surveyQuItem">
+        <div class="surveyQuItemContent" style="min-height: 35px;">
+            <div class="quCoTitle" style="background: rgb(243, 247, 247);">
+                <div class="editAble quCoTitleEdit" style="padding-left: 15px;">@Html.Raw(question.QuName)</div>
+            </div>
+        </div>
+    </div>
+</div>

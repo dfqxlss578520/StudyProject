@@ -1,0 +1,11 @@
+﻿.surveyLeftBtnGroup a { color: #5A9ECD; }
+.btn-group a:hover { background: #317BCF; color: white; border-color: #317BCF; }
+.btn-group > .btn:not(:first-child) { margin-left: -1px; }
+.contacts-table tr td { font-size: 16px !important; }
+.dialogBtn1 { border: none; font-size: 1em; font-weight: bold; cursor: pointer; padding: 8px 10px; }
+    .dialogBtn1 .ui-button-text { padding: .4em 1em; display: block; line-height: normal; }
+.dialogBtn1Cencel { background: none; }
+    .dialogBtn1Cencel:hover { background: #f6f6f6; }
+button { outline: none; }
+.dialogMessage select, .dialogMessage input { padding: 5px; color: #333333; border: 1px solid #98C5C3; }
+.surveyLeftBtnGroup { width: 285px; }
